@@ -1,0 +1,17 @@
+[2024-05-08T09:21:37.287+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-05-08T09:21:37.332+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: check_guests_arrival_dag.check_guests_arrival manual__2024-05-08T09:21:30.631592+00:00 [queued]>
+[2024-05-08T09:21:37.359+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: check_guests_arrival_dag.check_guests_arrival manual__2024-05-08T09:21:30.631592+00:00 [queued]>
+[2024-05-08T09:21:37.360+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2024-05-08T09:21:37.408+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): check_guests_arrival> on 2024-05-08 09:21:30.631592+00:00
+[2024-05-08T09:21:37.411+0000] {standard_task_runner.py:63} INFO - Started process 1222 to run task
+[2024-05-08T09:21:37.413+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'check_guests_arrival_dag', 'check_guests_arrival', 'manual__2024-05-08T09:21:30.631592+00:00', '--job-id', '25', '--raw', '--subdir', 'DAGS_FOLDER/check_guests_arrival_dag.py', '--cfg-path', '/tmp/tmp9q9e2477']
+[2024-05-08T09:21:37.415+0000] {standard_task_runner.py:91} INFO - Job 25: Subtask check_guests_arrival
+[2024-05-08T09:21:37.528+0000] {task_command.py:426} INFO - Running <TaskInstance: check_guests_arrival_dag.check_guests_arrival manual__2024-05-08T09:21:30.631592+00:00 [running]> on host 7d2239535ea7
+[2024-05-08T09:21:37.710+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='check_guests_arrival_dag' AIRFLOW_CTX_TASK_ID='check_guests_arrival' AIRFLOW_CTX_EXECUTION_DATE='2024-05-08T09:21:30.631592+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2024-05-08T09:21:30.631592+00:00'
+[2024-05-08T09:21:37.711+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-05-08T09:21:37.729+0000] {python.py:237} INFO - Done. Returned value was: Guests arrival checked
+[2024-05-08T09:21:37.729+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-05-08T09:21:37.781+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=check_guests_arrival_dag, task_id=check_guests_arrival, run_id=manual__2024-05-08T09:21:30.631592+00:00, execution_date=20240508T092130, start_date=20240508T092137, end_date=20240508T092137
+[2024-05-08T09:21:37.869+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-05-08T09:21:37.908+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-05-08T09:21:37.911+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

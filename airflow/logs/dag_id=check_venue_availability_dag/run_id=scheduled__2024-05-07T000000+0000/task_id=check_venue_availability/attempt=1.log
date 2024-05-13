@@ -1,0 +1,17 @@
+[2024-05-08T09:03:49.259+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2024-05-08T09:03:49.311+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: check_venue_availability_dag.check_venue_availability scheduled__2024-05-07T00:00:00+00:00 [queued]>
+[2024-05-08T09:03:49.329+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: check_venue_availability_dag.check_venue_availability scheduled__2024-05-07T00:00:00+00:00 [queued]>
+[2024-05-08T09:03:49.330+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 2
+[2024-05-08T09:03:49.385+0000] {taskinstance.py:2330} INFO - Executing <Task(PythonOperator): check_venue_availability> on 2024-05-07 00:00:00+00:00
+[2024-05-08T09:03:49.390+0000] {standard_task_runner.py:63} INFO - Started process 1003 to run task
+[2024-05-08T09:03:49.394+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'check_venue_availability_dag', 'check_venue_availability', 'scheduled__2024-05-07T00:00:00+00:00', '--job-id', '24', '--raw', '--subdir', 'DAGS_FOLDER/check_venue_availability_dag.py', '--cfg-path', '/tmp/tmpzr9cd_pw']
+[2024-05-08T09:03:49.397+0000] {standard_task_runner.py:91} INFO - Job 24: Subtask check_venue_availability
+[2024-05-08T09:03:49.501+0000] {task_command.py:426} INFO - Running <TaskInstance: check_venue_availability_dag.check_venue_availability scheduled__2024-05-07T00:00:00+00:00 [running]> on host 7d2239535ea7
+[2024-05-08T09:03:49.684+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='check_venue_availability_dag' AIRFLOW_CTX_TASK_ID='check_venue_availability' AIRFLOW_CTX_EXECUTION_DATE='2024-05-07T00:00:00+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2024-05-07T00:00:00+00:00'
+[2024-05-08T09:03:49.685+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2024-05-08T09:03:49.700+0000] {python.py:237} INFO - Done. Returned value was: Venue date availability checked
+[2024-05-08T09:03:49.700+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2024-05-08T09:03:49.752+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=check_venue_availability_dag, task_id=check_venue_availability, run_id=scheduled__2024-05-07T00:00:00+00:00, execution_date=20240507T000000, start_date=20240508T090349, end_date=20240508T090349
+[2024-05-08T09:03:49.809+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2024-05-08T09:03:49.837+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2024-05-08T09:03:49.840+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

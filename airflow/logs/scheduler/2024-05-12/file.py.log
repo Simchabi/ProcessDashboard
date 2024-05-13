@@ -1,0 +1,7 @@
+[2024-05-12T07:33:02.699+0000] {processor.py:161} INFO - Started process (PID=6609) to work on /opt/airflow/dags/file.py
+[2024-05-12T07:33:02.700+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/file.py for tasks to queue
+[2024-05-12T07:33:02.704+0000] {logging_mixin.py:188} INFO - [2024-05-12T07:33:02.704+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/file.py
+[2024-05-12T07:33:02.747+0000] {processor.py:840} INFO - DAG(s) 'example_failed_dag' retrieved from /opt/airflow/dags/file.py
+[2024-05-12T07:33:03.095+0000] {logging_mixin.py:188} INFO - [2024-05-12T07:33:03.094+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-05-12T07:33:03.799+0000] {logging_mixin.py:188} INFO - [2024-05-12T07:33:03.799+0000] {dag.py:3954} INFO - Setting next_dagrun for example_failed_dag to None, run_after=None
+[2024-05-12T07:33:27.427+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/file.py took 24.735 seconds
