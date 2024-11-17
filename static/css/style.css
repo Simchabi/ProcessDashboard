@@ -1,0 +1,439 @@
+/* עיצוב כללי של הדף */
+body {
+    background-color: #f5f5f5;
+    /* רקע עדין ואחיד */
+    color: #333;
+    /* טקסט כהה למראה מקצועי */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* כותרות ראשיות */
+h1 {
+    color: #fcfcfc;
+    /* צבע כותרת כחול עמוק */
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* כותרות עיקריות עם רקע סגול */
+.header-title {
+    background-color: #6a1b9a;
+    /* צבע סגול כהה */
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+
+
+
+/* עיצוב המודאלים */
+.modal-content {
+    border-radius: 8px;
+    /* מסגרת מעוגלת */
+    padding: 20px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    /* צל מסביב למודאל */
+}
+
+.modal-header,
+.modal-footer {
+    border-bottom: 1px solid #ddd;
+    border-top: none;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* עיצוב טפסים ושדות קלט */
+.form-label {
+    font-weight: 500;
+    color: #666;
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #1e90ff;
+    box-shadow: 0px 0px 8px rgba(30, 144, 255, 0.2);
+    /* צל כחול קל */
+}
+
+/* עיצוב כפתורים בתוך מודאלים */
+.modal .btn-primary {
+    background-color: #1e90ff;
+    border: none;
+}
+
+.modal .btn-primary:hover {
+    background-color: #007acc;
+    transform: scale(1.05);
+}
+
+/* עיצוב רשימות נפתחות */
+.form-select {
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.form-select:focus {
+    border-color: #1e90ff;
+    box-shadow: 0px 0px 8px rgba(30, 144, 255, 0.2);
+}
+
+/* הגדרת אייקונים בכפתורים */
+button i {
+    margin-right: 5px;
+}
+
+/* עיצוב תפריט ראשי */
+.navbar {
+    background-color: #6a1b9a;
+    /* צבע סגול לתפריט */
+    padding: 10px;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+}
+
+.navbar a:hover {
+    background-color: #4a148c;
+    /* גוון כהה יותר של סגול */
+    border-radius: 4px;
+}
+
+/* אזור תוכן מרכזי */
+.main-content {
+    padding: 20px;
+    background-color: #ffffff;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 1200px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* עיצוב החלק התחתון של הדף */
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+/* עיצוב הכותרת בעמוד הראשון */
+.welcome-title {
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+
+
+
+
+
+.welcome-section {
+    height: 100vh;
+    /* לוקח את כל גובה המסך */
+    background-color: #52006b;
+    /* סגול כהה */
+    display: flex;
+    align-items: center;
+    /* ממרכז את התוכן אנכית */
+    justify-content: space-between;
+    /* רווח בין תוכן שמאלי לימני */
+    padding: 0 20px;
+    /* רווח פנימי */
+    color: white;
+    /* צבע טקסט */
+}
+
+.welcome-content h1 {
+    font-size: 4em;
+    /* גודל טקסט גדול יותר */
+    margin: 0;
+    /* הורדת מרווח */
+    margin-left: 70px; /* תזוזה 20px לימין */
+
+}
+
+
+.welcome-gif img {
+    /*width: 300px; /* תגדיר גודל מתאים */
+    max-width: 50%;
+    /* גודל ה-GIF לא יעלה על 50% מהחלק */
+    height: auto;
+    /* שמירה על יחס גובה-רוחב */
+}
+
+
+
+.dashboard-section {
+    height: 100vh;
+    /* לוקח את כל גובה המסך */
+   /* background-color: #52006b;*/
+   background-color: #ba7afa;
+    /*background-color: #e3a7fc;*/
+    /* סגול בהיר יותר */
+    display: flex;
+    align-items: center;
+    /* מרכז אנכית */
+    justify-content: center;
+    /* מרכז אופקית */
+    text-align: center;
+    /* מרכז טקסט */
+    padding: 20px;
+    /* רווח פנימי */
+}
+
+
+/* חלק סקירת החברה */
+/*
+.company-overview-section {
+    height: 100vh;
+    background-color: #ddb9ff;
+    color: #4a148c;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px;
+}*/
+
+/*
+.company-overview-section img {
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+}*/
+
+/*
+.company-overview-section h2 {
+    color: #4a148c;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+}*/
+
+
+/*
+.company-overview-section p.lead {
+    color: #4a148c;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+*/
+
+
+
+.btn-scroll {
+    position: absolute;
+    /* מאפשר מיקום מדויק */
+    bottom: 20px;
+    /* ריחוק מהתחתית */
+    left: 50%;
+    /* מיקום מהמרכז */
+    transform: translateX(-50%);
+    /* תרגום 50% שמאלה כדי למרכז */
+    display: inline-block;
+    /* מאפשר לרחף */
+    padding: 10px 20px;
+    /* רווח פנימי */
+    background-color: #d1c4e9;
+    /* צבע סגול בהיר */
+    color: #333;
+    /* צבע טקסט כהה כדי לבלוט על הרקע הבהיר */
+    /*border: none; /* אין מסגרת */
+    /*border: 2px solid red; /* גבול אדום */
+    border-radius: 25px;
+    /* עיגול פינות */
+    text-decoration: none;
+    /* ביטול קו תחתון */
+    font-size: 1.2rem;
+    /* גודל טקסט */
+    transition: background-color 0.3s ease;
+    /* אפקט מעבר */
+    margin-top: 20px;
+    /* מרווח מעל */
+}
+
+
+.btn-scroll:hover {
+    background-color: #b39ddb;
+    /* צבע סגול כהה יותר במעבר */
+}
+
+
+/* Button group styling */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    /* מסדר את הכפתורים בעמודה */
+    align-items: flex-end;
+    /* מצמיד את הכפתורים לימין */
+}
+
+/* CSS for uniform button styling */
+
+/* Uniform button styling */
+.button-group .btn-custom {
+    background-color: #007bff;
+    /* צבע כחול */
+    color: white;
+    /* צבע טקסט */
+    border: none;
+    /* הסרת גבולות */
+    padding: 10px 20px;
+    /* ריווח פנימי */
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    /* פינות מעוגלות */
+    margin-bottom: 10px;
+    /* רווח בין הכפתורים */
+    width: 150px;
+    /* קביעת רוחב קבוע */
+    text-align: right;
+    /* מיישר את הכיתוב לימין */
+}
+
+/* Hover effect for buttons */
+.button-group .btn:hover {
+    background-color: #0056b3;
+    /* גוון כהה יותר של כחול במעבר עכבר */
+}
+
+
+/* עיצוב מיכל התוכן של החלק השלישי 
+.dashboard-section .container {
+    position: relative;
+    display: flex; 
+    justify-content: space-between; 
+    align-items: flex-start; 
+    /*text-align: left; 
+    text-align: center; 
+    width: 100%; /* תופס את כל הרוחב */
+/*flex-direction: column; 
+}*/
+
+/* עיצוב המיכל של החלק השלישי */
+.dashboard-section .container {
+    display: flex;
+    /* סידור התוכן */
+    justify-content: space-between;
+    /* ריווח בין צד ימין לשמאל */
+    align-items: flex-start;
+    /* מיישר את התוכן להתחלה */
+    width: 100%;
+    /* תופס את כל הרוחב */
+}
+
+/* הצד השמאלי (כותרת ופירוט) */
+.dashboard-section .left-content {
+    display: flex;
+    flex-direction: column; /* סידור כותרת ומלל בעמודה */
+    width: 60%;
+    /* תופס 60% מהמרחב */
+    text-align: left;
+    /* טקסט מיישר לשמאל */
+    /*color: #ffffff;*/
+    color: #52006b !important; /* סגול כהה עם חשיבות גבוהה */
+    /* צבע לבן */
+}
+
+
+/* מיקום הכותרת בראש ומעל כל הפירוט */
+.dashboard-section .container h1 {
+    margin-bottom: 20px;
+    /* מרווח תחתון לכותרת */
+    text-align: left;
+    color: #52006b !important; /* סגול כהה לכותרת ולמלל */
+
+}
+
+
+/* עיצוב הכפתורים */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    /* מסדר את הכפתורים בעמודה */
+    align-items: flex-end;
+    /* מצמיד את הכפתורים לימין */
+    /*margin-top: 20px;*/
+}
+
+.dashboard-section .left-content .content {
+    margin-top: 0;
+    color: #52006b !important; /* סגול כהה לכותרת ולמלל */
+
+}
+
+/* Styling for text content on the left */
+.dashboard-section .container h1,
+.dashboard-section .container p {
+    width: 60%;
+    /* כותרת והמלל יתפסו 60% מהשטח */
+    margin: 0;
+    /* הסרת מרווחים חיצוניים */
+    color: #52006b ; /* סגול כהה לכותרת ולמלל */
+
+    /*color: #ffffff;*/
+    /* צבע לבן למלל */
+
+}
+
+
+
+
+/* הצד הימני (רקע וסגנון הכפתורים) */
+.dashboard-section .button-background {
+    background-color: #8115ad;
+    /*background-color: #e3a7fc;*/
+    /* צבע סגול */
+    border-radius: 15px;
+    /* קצוות מעוגלים */
+    padding: 30px;
+    /* רווח פנימי גדול יותר */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* מיישר את הכפתורים לימין */
+    width: 25%;
+    /* תופס 35% מהמרחב */
+}
+
+
+
+/* עיצוב תוכן */
+.content {
+    margin-top: 20px;
+    /*color: #fff;*/
+    color: #8115ad;
+
+    /* טקסט בצבע לבן */
+}
+
+.content p {
+    color: #8115ad; /* גוון סגול כהה */
+}

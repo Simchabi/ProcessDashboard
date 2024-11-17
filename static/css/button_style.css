@@ -1,0 +1,89 @@
+body {
+    background-color: #52006b; /* צבע סגול */
+    color: white; /* צבע טקסט לבן */
+}
+
+.container {
+    margin-top: 50px;
+}
+
+h1 {
+    text-align: center;
+}
+
+
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px; /* רווח מתחת לכפתורים */
+    margin-top: 80px; /* רווח מעל הכפתורים */
+}
+
+
+
+.button-container {
+    background-color: #5b2d8d; /* צבע כהה יותר מהרקע */
+    border-radius: 15px; /* קצוות מעוגלים */
+    padding: 20px; /* רווח פנימי */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* צל */
+}
+
+.btn-custom {
+    background-color: #007bff; /* צבע כחול */
+    color: white; /* צבע טקסט לבן */
+    border: none; /* ללא גבולות */
+}
+
+.btn-custom:hover {
+    background-color: #0056b3; /* צבע כחול כהה בעת ריחוף */
+}
+
+/* Modal styles */
+.modal-header {
+    background-color: #343a40; /* צבע רקע כהה עבור כותרת המודל */
+    color: white; /* צבע טקסט לבן */
+}
+
+.modal-body {
+    background-color: #ba7afa; /* צבע רקע בהיר עבור גוף המודל */
+}
+
+
+
+
+.btn-scroll {
+    position: absolute;
+    /* מאפשר מיקום מדויק */
+    bottom: 20px;
+    /* ריחוק מהתחתית */
+    left: 50%;
+    /* מיקום מהמרכז */
+    transform: translateX(-50%);
+    /* תרגום 50% שמאלה כדי למרכז */
+    display: inline-block;
+    /* מאפשר לרחף */
+    padding: 10px 20px;
+    /* רווח פנימי */
+    background-color: #d1c4e9;
+    /* צבע סגול בהיר */
+    color: #333;
+    /* צבע טקסט כהה כדי לבלוט על הרקע הבהיר */
+    /*border: none; /* אין מסגרת */
+    /*border: 2px solid red; /* גבול אדום */
+    border-radius: 25px;
+    /* עיגול פינות */
+    text-decoration: none;
+    /* ביטול קו תחתון */
+    font-size: 1.2rem;
+    /* גודל טקסט */
+    transition: background-color 0.3s ease;
+    /* אפקט מעבר */
+    margin-top: 20px;
+    /* מרווח מעל */
+}
+
+
+.btn-scroll:hover {
+    background-color: #b39ddb;
+    /* צבע סגול כהה יותר במעבר */
+}
