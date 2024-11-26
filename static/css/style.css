@@ -204,6 +204,8 @@ button i {
     /* מרכז טקסט */
     padding: 20px;
     /* רווח פנימי */
+    position: relative; /* כדי למקם את הכפתור */
+
 }
 
 
@@ -278,6 +280,29 @@ button i {
     /* מרווח מעל */
 }
 
+
+.btn2-scroll {
+    position: absolute; /* מיקום יחסי לסקשן */
+    bottom: 20px; /* מיקום 20 פיקסלים מהתחתית של הדף */
+    left: 50%; /* למרכז את הכפתור */
+    transform: translateX(-50%); /* מרכז את הכפתור אופקית */
+    display: inline-block; /* הגדרת כפתור קישור */
+    padding: 10px 20px; /* ריווח פנימי */
+    background-color: #6a1b9a; /* צבע סגול כהה */
+    color: white; /* צבע טקסט לבן */
+    border: none; /* ללא גבול */
+    border-radius: 25px; /* עיגול הפינות */
+    text-decoration: none; /* ביטול קו תחתון */
+    font-size: 1.2rem; /* גודל טקסט */
+    transition: background-color 0.3s ease; /* אפקט מעבר צבע */
+
+}
+
+/* אפקט ריחוף */
+.btn2-scroll:hover {
+    background-color: #4a0072; /* צבע סגול כהה יותר בריחוף */
+    cursor: pointer; /* סמן ריחוף */
+}
 
 .btn-scroll:hover {
     background-color: #b39ddb;
@@ -436,4 +461,29 @@ button i {
 
 .content p {
     color: #8115ad; /* גוון סגול כהה */
+}
+
+
+
+
+/* סגנון לסקשן view-section */
+.view-section {
+    background-color: #4a0072; /* צבע רקע סגול כהה */
+    color: white; /* צבע טקסט לבן */
+    display: flex; /* שימוש ב-Flexbox למרכז את התוכן */
+    justify-content: center; /* יישור אופקי */
+    align-items: center; /* יישור אנכי */
+    height: 100vh; /* גובה של 100% מגובה המסך */
+    text-align: center; /* יישור טקסט למרכז */
+    font-family: Arial, sans-serif; /* גופן */
+    position: relative; /* כדי למקם את הכפתור */
+}
+
+
+/* התאמת כפתור בתוך ה- view-section */
+.view-section .btn2-scroll {
+    position: absolute; /* יישור בתחתית ה-view-section */
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
 }

@@ -182,7 +182,7 @@ function renderForm(fields) {
 
 function addSensorToTask() {
     const sensorId = $('#addsensoridTask').val();  // השגת ה-ID של הסנסור שנבחר
-    if (sensorId && !selectedSensors.includes(sensorId)) {
+    if (sensorId && !selectedSensors.includes(parseInt(sensorId))) {
         selectedSensors.push(parseInt(sensorId));
         alert(`Sensor ${sensorId} added to the task!`);
     } else {

@@ -259,7 +259,9 @@ def add_entity():
         required_fields = ['name', 'description', 'owner','status','team','Start_Time', 'finish_time', 'client']
         collection = db.process
 
-    if collection:
+
+
+    if collection is not None:
         missing_fields = [field for field in required_fields if field not in data or not data[field]]
         if missing_fields:
             return jsonify({"message": f"Missing required fields: {', '.join(missing_fields)}"}), 400
@@ -343,5 +345,6 @@ def delete_process(process_id):
         return jsonify({'error': str(e)}), 500
        
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5001)
+
 

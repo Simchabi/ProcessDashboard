@@ -4,7 +4,7 @@ airflow/logs/
 # Airflow stuff
 logs/
 airflow.db
-airflow.cfg
+#airflow.cfg
 unittests.cfg
 webserver_config.py
 
