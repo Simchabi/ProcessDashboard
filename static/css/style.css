@@ -280,6 +280,10 @@ button i {
     /* מרווח מעל */
 }
 
+.btn-scroll:hover {
+    background-color: #b39ddb;
+    /* צבע סגול כהה יותר במעבר */
+}
 
 .btn2-scroll {
     position: absolute; /* מיקום יחסי לסקשן */
@@ -304,10 +308,7 @@ button i {
     cursor: pointer; /* סמן ריחוף */
 }
 
-.btn-scroll:hover {
-    background-color: #b39ddb;
-    /* צבע סגול כהה יותר במעבר */
-}
+
 
 
 /* Button group styling */

@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
+from datetime import datetime
 
 app = Flask(__name__)
-
 
 client = MongoClient('mongodb+srv://simchab667:GesJiqzTeqyHsdp5@cluster0.yhfpz1v.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 db = client['MyDB']
@@ -109,6 +109,19 @@ def get_process(process_id):
     process = process_collection.find_one({'_id': ObjectId(process_id)})
     process['_id'] = str(process['_id']) 
     return jsonify(process), 200
+
+@app.route('/process_tasks/<process_id>', methods=['GET'])
+def get_tasks_in_process(process_id):
+    # המרת ה-ID של התהליך לאובייקט ID של MongoDB
+    try:
+        process_id = ObjectId(process_id)
+    except Exception as e:
+        return jsonify({"error": "Invalid process ID"}), 400
+
+    process = db.process.find_one({"_id": process_id})
+    if process:
+        return jsonify({"tasks": process.get("tasks", [])})  # מחזיר את המערך של ה-ID של הטסקים
+    return jsonify({"error": "Process not found"}), 404
 
 # Update sensor
 @app.route('/update_sensor/<id>', methods=['POST'])
@@ -259,8 +272,6 @@ def add_entity():
         required_fields = ['name', 'description', 'owner','status','team','Start_Time', 'finish_time', 'client']
         collection = db.process
 
-
-
     if collection is not None:
         missing_fields = [field for field in required_fields if field not in data or not data[field]]
         if missing_fields:
@@ -343,7 +354,74 @@ def delete_process(process_id):
         return jsonify({'message': 'Process deleted successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-       
+
+######################
+@app.route('/tasks/<process_id>')
+def get_process_tasks(process_id):
+    process = process_collection.find_one({'_id': ObjectId(process_id)})
+    if process:
+        tasks = task_collection.find({'id_task': {'$in': process.get('tasks', [])}})
+        task_list = [
+            {
+                'id': str(task['_id']),
+                'name': task['name'],
+                'start_date': format_time(task.get('start_date', ''), 'task'),
+                'end_date': format_time(task.get('end_date', ''), 'task')
+            }
+            for task in tasks
+        ]
+        return jsonify(task_list)
+    else:
+        return jsonify({'error': 'Process not found'}), 404
+
+def format_time(time_str, time_type):
+    if isinstance(time_str, str):  # אם time_str הוא מחרוזת
+        try:
+            # נניח שהתאריך במבנה של 'YYYY-MM-DD HH:MM'
+            time_obj = datetime.strptime(time_str, '%Y-%m-%d %H:%M')
+            return time_obj.strftime('%d/%m/%Y %H:%M')
+        except ValueError:
+            return ''  # במקרה שהתאריך לא תקין
+    return time_str.strftime('%d/%m/%Y %H:%M')  # אם time_str כבר אובייקט datetime
+
+@app.route('/dashboard')
+def dashboard():
+    # Retrieve all data from the 'process' collection
+    processes = process_collection.find()
+
+    # Count statuses
+    status_counts = {
+        'ongoing': 0,
+        'completed': 0,
+        'pending': 0
+    }
+    for process in processes:
+        status = process.get('status', 'unknown')
+        if status in status_counts:
+            status_counts[status] += 1
+
+    # Prepare process list with formatted times
+    processes = process_collection.find()
+    process_list = [
+        {
+            'id': str(process['_id']),
+            'name': process['name'],
+            'description': process['description'],
+            'status': process['status'],
+            'start_time': format_time(process.get('Start_Time', ''), 'process'),
+            'finish_time': format_time(process.get('finish_time', ''), 'process'),
+            'client': process['client']
+        }
+        for process in processes
+    ]
+
+    # Pass status counts and process list to template
+    return render_template(
+        'dashboard.html',
+        processes=process_list,
+        status_counts=status_counts
+    )
+
 if __name__ == '__main__':
     app.run(port=5001)
 

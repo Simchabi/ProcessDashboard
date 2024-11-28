@@ -96,8 +96,8 @@ function openAddForm(entityType) {
             { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' },
             { id: 'team', label: 'Team', type: 'text' },
-            { id: 'start_date', label: 'Start Date', type: 'date' },
-            { id: 'end_date', label: 'End Date', type: 'date' },
+            { id: 'start_date', label: 'Start Date', type: 'datetime-local' },
+            { id: 'end_date', label: 'End Date', type: 'datetime-local' },
             { id: 'link', label: 'Link', type: 'url' },
             { id: 'remarks', label: 'Remarks', type: 'textarea' }
         ],
@@ -107,8 +107,8 @@ function openAddForm(entityType) {
             { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' },
             { id: 'team', label: 'Team', type: 'text' },
-            { id: 'Start_Time', label: 'Start Time', type: 'text' },
-            { id: 'finish_time', label: 'Finish Time', type: 'text' },
+            { id: 'Start_Time', label: 'Start Time', type: 'datetime-local' },
+            { id: 'finish_time', label: 'Finish Time', type: 'datetime-local' },
             { id: 'client', label: 'Client', type: 'text' }
         ]
     };

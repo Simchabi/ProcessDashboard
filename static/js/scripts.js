@@ -177,7 +177,7 @@ function getUserDetails(userId) {
     if (userId) {
         $.get(`/user/${userId}`, function (data) {
             $('#user_id').val(data._id);
-            $('#userId').val(data.id);
+            $('#userId').val(data.Id);
             $('#userName').val(data.name);
             $('#role').val(data.role);
             $('#userteam').val(data.team);
@@ -248,6 +248,11 @@ function getTaskDetails(taskId) {
 
 function saveTaskChanges() {
     const taskId = $('#task_id').val();
+     // בודקים אם הסנסורים שונו. אם לא, לא נשלח אותם
+     let sensors = $('#tasksensorSelect').val();
+     if (!sensors) {
+         sensors = undefined;  // לא שולחים את הסנסורים אם לא נבחרו
+     }
     const data = {
         name: $('#taskName').val(),
         description: $('#taskdescription').val(),
@@ -258,8 +263,15 @@ function saveTaskChanges() {
         end_date: $('#endDate').val(),
         link: $('#link').val(),
         remarks: $('#remarks').val(),
-        sensors: $('#tasksensorSelect').val() //,??
+        sensors: sensors  
     };
+     // מוודאים שלא נשלחים ערכים לא מעודכנים
+     const filteredData = {};
+     for (const key in data) {
+         if (data[key] !== undefined) {
+             filteredData[key] = data[key];
+         }
+     }
     $.ajax({
         url: `/update_task/${taskId}`,
         type: 'POST',
@@ -309,7 +321,11 @@ function getProcessDetails(processId) {
 }
 
 function saveProcessChanges() {
-    const selectedTaskIds = Array.from($('#taskIds option:selected')).map(option => option.value);
+    let tasks = $('#processtaskSelect').val();
+    if (!tasks) {
+        tasks = undefined;  // לא שולחים את הסנסורים אם לא נבחרו
+    }
+   // const selectedTaskIds = Array.from($('#taskIds option:selected')).map(option => option.value);
     const processId = $('#process_id').val();
     const data = {
         name: $('#processName').val(),
@@ -320,8 +336,15 @@ function saveProcessChanges() {
         team: $('#team').val(),
         Start_Time: $('#Start_Time').val(),
         finish_time: $('#finish_time').val(),
-        tasks: selectedTaskIds // רשימת ה-id של המשימות שנבחרו
+        tasks: tasks // selectedTaskIds
     };
+    // מוודאים שלא נשלחים ערכים לא מעודכנים
+    const filteredData = {};
+    for (const key in data) {
+        if (data[key] !== undefined) {
+            filteredData[key] = data[key];
+        }
+    }
     $.ajax({
         url: `/update_process/${processId}`,
         type: 'POST',

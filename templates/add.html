@@ -7,7 +7,6 @@
     <title>add page</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
-    <!-- הוסף את זה -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/button_style.css') }}">
 
@@ -16,7 +15,7 @@
 <body>
     
     <div class="container mt-5">
-        <h1>Process Management - Addition</h1>
+       <!-- <h1>Process Management - Addition</h1>-->
         <div class="action-buttons">
             <div class="button-container"> <!-- הוסף את זה -->
                 <button class="btn btn-custom" onclick="openAddForm('sensor')">
@@ -128,11 +127,11 @@
                         </div>
                         <div class="mb-3">
                             <label for="addstartDate" class="form-label">Start Date</label>
-                            <input type="date" id="addstartDate" class="form-control" readonly />
+                            <input type="datetime-local" id="addstartDate" class="form-control" readonly />
                         </div>
                         <div class="mb-3">
                             <label for="addendDate" class="form-label">End Date</label>
-                            <input type="date" id="addendDate" class="form-control" readonly />
+                            <input type="datetime-local" id="addendDate" class="form-control" readonly />
                         </div>
                         <div class="mb-3">
                             <label for="addlink" class="form-label">Link</label>
@@ -153,7 +152,6 @@
         <!--<a href="/" class="btn-scroll">to the main page</a>-->
         <a href="/#dashboard-section" class="btn-scroll">to the main page</a>
     </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/addScripts.js') }}"></script>
