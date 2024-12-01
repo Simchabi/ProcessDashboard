@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!--- <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <!-- <div class="container">
+        <h1> Dashboard</h1>
+        <h1> View by</h1>
+
+<div class="full-screen-navigation">
+    <div class="navigation-buttons">
+        <a href="#cards-section" class="btn-scroll">Division by Status</a>
+        <a href="#data-table-section" class="btn-scroll">Table</a>
+        <a href="#gantt-section" class="btn-scroll">Gantt Chart</a>
+    </div>
+</div>-->
+
+    <div class="full-screen-navigation">
+        <div class="content">
+            <img src="{{ url_for('static', filename='dashboard.gif') }}" alt="dashboard GIF" class="custom-gif">
+            <!--<a href="https://lordicon.com/">Icons by Lordicon.com</a>-->
+            <h1>Dashboard</h1>
+            <h1>View by</h1>
+            <div class="navigation-buttons">
+                <a href="#cards-section" class="btn-scroll">Division by Status</a>
+                <a href="#data-table-section" class="btn-scroll">Table</a>
+                <a href="#gantt-section" class="btn-scroll">Gantt Chart</a>
+            </div>
+            <!-- כפתור חזרה לעמוד הקודם -->
+            <div class="back-button-container">
+                <a href="{{ url_for('home') }}" class="back-button">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- <div class="cards">-->
+    <div class="full-screen-section">
+        <!-- כרטיסים להצגת נתונים עיקריים -->
+        <div id="cards-section" class="cards">
+            <div class="card">
+                <h2>סה"כ תהליכים</h2>
+                <p>{{ processes | length }}</p>
+            </div>
+            <div class="card">
+                <h2>בתהליך</h2>
+                <p>{{ processes | selectattr('status', 'equalto', 'בתהליך') | list | length }}</p>
+            </div>
+            <div class="card">
+                <h2>הושלמו</h2>
+                <p>{{ processes | selectattr('status', 'equalto', 'הושלם') | list | length }}</p>
+            </div>
+            <div class="card">
+                <h2>ממתינים</h2>
+                <p>{{ processes | selectattr('status', 'equalto', 'בהמתנה') | list | length }}</p>
+            </div>
+        </div>
+
+        <!-- גרף עוגה -->
+        <div class="chart-container">
+            <h2>חלוקה לפי סטטוסים</h2>
+            <canvas id="statusPieChart"></canvas>
+        </div>
+    </div>
+
+
+    <!-- טבלה -->
+
+    <div class="full-screen-table">
+        <div id="data-table-section">
+            <table>
+                <thead>
+                    <tr>
+                        <th>שם פרויקט</th>
+                        <th>תיאור</th>
+                        <th>סטטוס</th>
+                        <th>זמן התחלה</th>
+                        <th>זמן סיום</th>
+                        <th>לקוח</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for process in processes %}
+                    <tr>
+                        <td>{{ process.name }}</td>
+                        <td>{{ process.description }}</td>
+                        <td class="status {{ process.status | lower }}">{{ process.status }}</td>
+                        <td>{{ process.start_time }}</td>
+                        <td>{{ process.finish_time }}</td>
+                        <td>{{ process.client }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Gantt for Processes -->
+    <!--  <div class="gantt-container">-->
+
+    <div id="gantt-section" class="gantt-container">
+        <h2>Gantt for Processes</h2>
+        <div id="process-chart" class="gantt-chart"></div>
+        <div id="task-chart" class="gantt-chart"></div>
+    </div>
+
+    <script id="status-data" type="application/json">
+        {{ status_counts | tojson | safe }}
+    </script>
+    <script id="process-data" type="application/json">
+        {{ processes | tojson | safe }}
+    </script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+
+</html>

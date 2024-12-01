@@ -391,9 +391,9 @@ def dashboard():
 
     # Count statuses
     status_counts = {
-        'ongoing': 0,
-        'completed': 0,
-        'pending': 0
+        'בתהליך': 0,
+        'הושלם': 0,
+        'בהמתנה': 0
     }
     for process in processes:
         status = process.get('status', 'unknown')

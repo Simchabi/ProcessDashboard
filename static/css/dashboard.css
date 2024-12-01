@@ -1,0 +1,412 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #a4a1a5;
+    color: #ffffff;
+}
+
+
+.dashboard-container {
+    width: 90%;
+    margin: auto;
+}
+
+.dashboard-header {
+    text-align: center;
+    padding: 20px;
+    background-color: #1f1f1f;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #ff6384;
+}
+
+.dashboard-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+}
+.card-container {
+    display: flex;
+    flex-wrap: wrap; /* מאפשר לכרטיסים לעבור לשורות נוספות */
+    flex-direction: row; /* הכרטיסים יהיו מסודרים בשורה אחת */
+}
+
+
+.stat-card {
+    background: #8115ad;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    width: 25%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h2 {
+    margin-bottom: 10px;
+    color: #36a2eb;
+}
+
+.stat-card p {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.dashboard-graphs {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.graph-container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.dashboard-table {
+    margin: 20px 0;
+}
+
+.dashboard-table table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1f1f1f;
+    color: #ffffff;
+}
+
+.dashboard-table th, .dashboard-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+}
+
+.status.פעיל {
+    color: #36a2eb;
+    font-weight: bold;
+}
+
+.status.הסתיים {
+    color: #b3ebca;
+    font-weight: bold;
+}
+
+.status.מושהה {
+    color: #ff6384;
+    font-weight: bold;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    color: #ffffff;
+}
+
+/* עטיפה חיצונית שמכסה את כל המסך */
+.full-screen-section {
+    display: flex;
+    flex-direction: column; /* סידור התוכן בעמודה */
+    justify-content: center; /* מיקום התוכן במרכז באופן אנכי */
+    align-items: center; /* מיקום התוכן במרכז באופן אופקי */
+    height: 100vh; /* גובה של כל המסך */
+    background-color: #a4a1a5; /* צבע רקע */
+    padding: 20px; /* רווח פנימי */
+    box-sizing: border-box; /* כדי שהריווח פנימי לא יפגע בגודל */
+}
+
+
+.cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 40px; /* מוריד את הכרטיסים למטה */
+    gap: 20px;
+    flex-wrap: wrap; /* מאפשר לכרטיסים לעבור לשורות נוספות */
+    justify-content: center; /* מיקום הכרטיסים במרכז */
+    width: 100%; /* תופס את כל רוחב המסך */
+}
+
+/* עיצוב כל כרטיס */
+.card {
+    background-color: #e3daec;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    flex: 1;
+    color: #65148b;
+   /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);*/
+    /*max-width: 100%; /* מגביל את רוחב הכרטיסים לאורך המסך */
+    /*box-sizing: border-box; */
+    max-width: 180px; /* מגביל את הרוחב המקסימלי */
+    box-sizing: border-box;/* מאפשר לכלול את הריווח בתוך הרוחב */
+    width: 180px; /* מקטין את הרוחב של הכרטיסים */
+   
+    /*width: 220px; /* רוחב קבוע לכל כרטיס */
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+}
+.card h2 {
+    margin: 10px 0;
+    font-size: 24px;
+}
+.chart-container {
+    margin-top: 40px; /* ריווח בין הכרטיסים לגרף */
+    /*width: 100%; /* רוחב מלא */
+    width: auto; /* גודל דינמי - מתאים את עצמו לתוכן */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 20px 0;
+    background-color: transparent; /* ביטול רקע */
+    /*background-color: #e3a7fc;*/
+    /*background-color: #3a3d46;*/
+   /* padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);*/
+
+    padding: 0; /* ביטול ריווח פנימי */
+    box-shadow: none; /* ביטול הצללה */
+    border-radius: 0; /* ביטול עיגול הפינות */
+
+    
+}
+.chart-container canvas {
+    display: block;
+    margin: 0 auto;
+}
+.chart-container h2 {
+    text-align: center; /* ממרכז את הכותרת */
+    color: #65148b; /* צבע הטקסט (לא חובה) */
+    margin-bottom: 20px; /* רווח מתחת לכותרת (לא חובה) */
+
+    font-size: 1.8rem;
+    
+}
+
+
+/* עטיפה חיצונית שמכסה את כל המסך */
+.full-screen-table {
+    display: flex;
+    justify-content: center; /* מיקום מרכזי אופקי */
+    align-items: center; /* מיקום מרכזי אנכי */
+    height: 100vh; /* גובה המסך */
+    background-color: #ba7afa; /* רקע סגול בהיר */
+    padding: 20px; /* ריווח פנימי */
+    box-sizing: border-box; /* להכליל שוליים פנימיים בחישוב */
+    overflow: auto; /* גלילה במקרה של תוכן גדול */
+}
+
+table {
+    
+    margin: 20px 0;
+    background-color: #ffffff;
+    /*background-color: #3a3d46;*/
+    border-radius: 8px;
+    overflow: hidden;
+
+    width: 100%; /* הטבלה תתפוס את כל הרוחב */
+    border-collapse: collapse; /* ביטול ריווח בין התאים */
+    /*background-color: white; /* רקע הטבלה */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* הצללה לטבלה */
+    text-align: center; /* טקסט במרכז */
+}
+th, td {
+    text-align: center;
+   /* padding: 12px 15px;*/
+    padding: 15px; /* ריווח פנימי */
+    border: 1px solid #ddd; /* מסגרת עדינה */
+    font-size: 1rem; /* גודל טקסט */
+    color: #52006b;
+}
+th {
+    background-color: #8115ad;/* רקע כותרת */
+    color: #fff;
+    font-weight: bold; /* טקסט מודגש */
+}
+tr:nth-child(even) {
+    background-color: #a4a1a5;/* צבע שורות זוגיות */
+    /*background-color: #f9f9f9; /* צבע שורות זוגיות */
+    
+
+}
+tr:hover {
+    background-color: #6b6f79;/* הדגשה במעבר עכבר */
+   /* background-color: #f1f1f1; /* הדגשה במעבר עכבר */
+}
+
+
+/* עטיפה חיצונית לחלק ה-Gantt */
+.gantt-container {
+    display: flex;
+    flex-direction: column; /* מסדר את התוכן בעמודה */
+    justify-content: center; /* מרכז את התוכן אנכית */
+    align-items: center; /* מרכז את התוכן אופקית */
+    /*height: 100vh; /* גובה של כל המסך */
+    width: 100%; /* רוחב מלא */
+   /*width: 90%; /* מרחיב את הגרף ל-90% מרוחב הקונטיינר */
+    /*max-width: 1200px; /* מגביל את הרוחב המקסימלי */
+    background-color: #d9cadd; /* צבע רקע (אפשר לשנות) */
+    padding: 20px; /* ריווח פנימי */
+    box-sizing: border-box; /* כולל את הריווח כחלק מהגודל */
+    gap: 20px; /* רווח בין הגרפים */
+
+   /* height: 400px; /* גובה הגרף */
+   /* /*border: 1px solid #b5a1c5; /* מסגרת דקה */
+    border-radius: 8px; /* פינות מעוגלות */
+   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* הצללה עדינה */
+
+   /* margin: 20px 0;
+    border-radius: 8px;
+   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);*/
+}
+
+
+.gantt-container h2 {
+    margin-bottom: 20px; /* רווח מתחת לכותרת */
+   
+    font-size: 1.8rem; /* גודל הטקסט */
+    text-align: center; /* ממרכז את הכותרת */
+
+    color: #4d004d; /* צבע טקסט כהה */
+   /* background-color: #f3e6f7; 
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px; */
+}
+
+
+
+
+
+
+/* עטיפה חיצונית שמכסה את כל המסך */
+.full-screen-navigation {
+    display: flex; /* שימוש ב-Flexbox */
+    justify-content: center; /* מיקום אופקי במרכז */
+    align-items: center; /* מיקום אנכי במרכז */
+    height: 100vh; /* גובה של כל המסך */
+    background-color: #8115ad; /* צבע רקע סגול בהיר */
+    margin: 0; /* ביטול שוליים חיצוניים */
+    padding: 0; /* ביטול שוליים פנימיים */
+    box-sizing: border-box; /* עיצוב נכון של כל המסגרת */
+    text-align: center; /* מיקום מרכזי לטקסט */
+}
+
+/* עטיפה פנימית של כל התוכן */
+.full-screen-navigation .content {
+    display: flex;
+    flex-direction: column; /* סידור התוכן בעמודה */
+    gap: 20px; /* ריווח בין האלמנטים */
+    align-items: center; /* מיקום מרכזי */
+    /*margin-top: -30px; /* הזזה כלפי מעלה של התוכן */
+}
+
+/* עיצוב כותרות */
+.full-screen-navigation .content h1 {
+    font-size: 3rem; /* גודל גדול לכותרות */
+    color: #ffffff; /* צבע סגול כהה */
+    margin: 0; /* ביטול שוליים */
+    margin-top: -20px; /* הזזה של הכותרות כלפי מעלה */
+
+}
+
+/* עיצוב כפתורים */
+.navigation-buttons {
+    display: flex; /* שימוש ב-Flexbox לכפתורים */
+    gap: 20px; /* ריווח בין הכפתורים */
+}
+
+.navigation-buttons .btn-scroll {
+    text-decoration: none; /* ביטול קו תחתון */
+    background-color: #d1c4e9; /* צבע רקע סגול */
+    color: #650f8c; /* צבע טקסט */
+    border: 2px solid #650f8c; /* צבע מסגרת */
+    border-radius: 30px; /* פינות מעוגלות */
+    padding: 15px 30px; /* רווח פנימי */
+    font-size: 20px; /* גודל הטקסט */
+    font-weight: bold; /* טקסט מודגש */
+    cursor: pointer; /* שינוי סמן העכבר */
+    transition: all 0.3s ease; /* מעבר חלק */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* הצללה עדינה */
+}
+
+/* עיצוב הכפתורים במעבר עכבר */
+.navigation-buttons .btn-scroll:hover {
+    background-color: #650f8c; /* שינוי צבע רקע */
+    border-color: #d1c4e9; /* שינוי צבע מסגרת */
+    color: #cfcecf; /* צבע טקסט */
+    transform: scale(1.1); /* הגדלה */
+}
+
+/* עיצוב בלחיצה */
+.navigation-buttons .btn-scroll:active {
+    transform: scale(0.95); /* הקטנה בלחיצה */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* הצללה מופחתת */
+}
+
+
+
+
+
+
+
+/* עיצוב כפתור חזרה לעמוד הקודם */
+.back-button-container {
+    margin-top: 200px; /* ריווח נוסף למטה */
+    /*margin-top: 30px; /* ריווח בין הכפתורים */
+    text-align: center; /* מיקום הכפתור במרכז */
+}
+
+.back-button {
+    text-decoration: none; /* ביטול קו תחתון */
+    background-color: #d1c4e9; /* צבע רקע סגול */
+    color: #650f8c; /* צבע טקסט */
+    border: 2px solid #650f8c; /* צבע מסגרת */
+    border-radius: 30px; /* פינות מעוגלות */
+    padding: 15px 30px; /* רווח פנימי */
+    font-size: 20px; /* גודל הטקסט */
+    font-weight: bold; /* טקסט מודגש */
+    cursor: pointer; /* שינוי סמן העכבר */
+    transition: all 0.3s ease; /* מעבר חלק */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* הצללה עדינה */
+}
+
+/* עיצוב הכפתור במעבר עכבר */
+.back-button:hover {
+    background-color: #650f8c; /* שינוי צבע רקע */
+    border-color: #d1c4e9; /* שינוי צבע מסגרת */
+    color: #cfcecf; /* צבע טקסט */
+    transform: scale(1.1); /* הגדלה */
+}
+
+/* עיצוב בלחיצה */
+.back-button:active {
+    transform: scale(0.95); /* הקטנה בלחיצה */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* הצללה מופחתת */
+}
+
+
+
+.custom-gif {
+    position: fixed; /* מאפשר מיקום יחסי למסך */
+    bottom: 50px; /* מרחק של 50px מהתחתית */
+    right: 150px; /* מרחק של 50px מהימין */
+    width: 150px; /* גודל מוגדל של הגיף */
+    height: auto; /* שומר על יחס הרוחב-גובה */
+    z-index: 10; /* מבטיח שהגיף יהיה מעל אלמנטים אחרים */
+    display: none; /* מסתיר את הגיף כברירת מחדל */
+}
+
+
+
+
+
+/*#7176f4
+/*f4e4ff סגול בהיר
