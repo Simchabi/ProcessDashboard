@@ -1,5 +1,6 @@
 let selectedSensors = [];
 let selectedTasks = [];
+let selectedUsers = '';
 let currentEntityType;
 function validateForm(entityType) {
     let allFilled = true;
@@ -8,16 +9,16 @@ function validateForm(entityType) {
 
     switch (entityType) {
         case 'sensor':
-            requiredFields = ['id', 'name', 'owner', 'status'];
+            requiredFields = ['id', 'name', 'status'];
             break;
         case 'user':
             requiredFields = ['name', 'role', 'team', 'permission', 'password', 'Id'];
             break;
         case 'task':
-            requiredFields = ['id_task', 'description', 'name', 'owner', 'status', 'team', 'end_date', 'link', 'remarks', 'start_date'];
+            requiredFields = ['id_task', 'description', 'name', 'status', 'team', 'end_date', 'link', 'remarks', 'start_date'];
             break;
         case 'process':
-            requiredFields = ['name', 'description', 'owner', 'status', 'team', 'Start_Time', 'finish_time', 'client'];
+            requiredFields = ['name', 'description', 'status', 'team', 'Start_Time', 'finish_time', 'client'];
             break;
     }
 
@@ -68,6 +69,19 @@ function AddgetTaskDetailsProcess(taskId) {
     }
 }
 
+function AddgetUserDetails(userId) {
+    if (userId) {
+        $.get(`/user/${userId}`, function (data) {
+            $('#_addUserId').val(data._id);
+            $('#addUserName').val(data.name);
+            $('#addUserRole').val(data.role);
+            $('#addUserTeam').val(data.team);
+            $('#addUserPermission').val(data.permission);
+            $('#addUserModal').modal('show');
+        });
+    }
+}
+
 function openAddForm(entityType) {
     currentEntityType = entityType;
     $('#addModal').modal('show');
@@ -78,11 +92,11 @@ function openAddForm(entityType) {
         sensor: [
             { id: 'id', label: 'ID', type: 'number', readonly: false },//טקסט
             { id: 'name', label: 'Name', type: 'text' },
-            { id: 'owner', label: 'Owner', type: 'text' },
+            //    { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' }
         ],
         user: [
-            { id: 'name', label: 'Name', type: 'text' },
+            { id: 'name', label: 'Name', type: 'text', readonly: true },
             { id: 'role', label: 'Role', type: 'text' },
             { id: 'team', label: 'Team', type: 'text' },
             { id: 'permission', label: 'Permission', type: 'text' },
@@ -93,7 +107,7 @@ function openAddForm(entityType) {
             { id: 'id_task', label: 'ID', type: 'number', readonly: false },//text
             { id: 'description', label: 'Description', type: 'text' },
             { id: 'name', label: 'Name', type: 'text' },
-            { id: 'owner', label: 'Owner', type: 'text' },
+            // { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' },
             { id: 'team', label: 'Team', type: 'text' },
             { id: 'start_date', label: 'Start Date', type: 'datetime-local' },
@@ -104,7 +118,7 @@ function openAddForm(entityType) {
         process: [
             { id: 'name', label: 'Name', type: 'text' },
             { id: 'description', label: 'Description', type: 'text' },
-            { id: 'owner', label: 'Owner', type: 'text' },
+            //  { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' },
             { id: 'team', label: 'Team', type: 'text' },
             { id: 'Start_Time', label: 'Start Time', type: 'datetime-local' },
@@ -112,39 +126,59 @@ function openAddForm(entityType) {
             { id: 'client', label: 'Client', type: 'text' }
         ]
     };
-    if (entityType === 'task') {
-        $.get(`/sensors`, function (data) {
-            const sensorOptions = [
-                '<option value="" disabled selected hidden>Select sensor to add</option>'
-            ]
-                .concat(data.map(sensor => `<option value="${sensor._id}">${sensor.name}</option>`));
-            fields.task.push({
-                id: 'add_sensor',
-                label: 'Sensor',
-                type: 'select',
-                options: sensorOptions,
-                onchange: "AddgetSensorDetailsTask(this.value)"
+    // Fetching users data to add user select dropdown
+    $.get(`/users`, function (data) {
+        const userOptions = [
+            '<option value="" disabled selected hidden>Select owner to add</option>'
+        ]
+            .concat(data.map(user => `<option value="${user._id}">${user.name}</option>`));
+
+        const userField = {
+            id: 'add_user',
+            label: 'Owner',
+            type: 'select',
+            options: userOptions,
+            onchange: "AddgetUserDetails(this.value)"
+        };
+        if (entityType === 'task') {
+            $.get(`/sensors`, function (data) {
+                const sensorOptions = [
+                    '<option value="" disabled selected hidden>Select sensor to add</option>'
+                ]
+                    .concat(data.map(sensor => `<option value="${sensor._id}">${sensor.name}</option>`));
+                fields.task.push({
+                    id: 'add_sensor',
+                    label: 'Sensor',
+                    type: 'select',
+                    options: sensorOptions,
+                    onchange: "AddgetSensorDetailsTask(this.value)"
+                });
+                fields.task.push(userField);
+                renderForm(fields[entityType]);
             });
-            renderForm(fields[entityType]);
-        });
-    } else if (entityType === 'process') {
-        $.get(`/tasks`, function (data) {
-            const taskOptions = [
-                '<option value="" disabled selected hidden>Select task to add</option>'
-            ]
-                .concat(data.map(task => `<option value="${task._id}">${task.name}</option>`));
-            fields.process.push({
-                id: 'add_task',
-                label: 'Task',
-                type: 'select',
-                options: taskOptions,
-                onchange: "AddgetTaskDetailsProcess(this.value)"
+        } else if (entityType === 'process') {
+            $.get(`/tasks`, function (data) {
+                const taskOptions = [
+                    '<option value="" disabled selected hidden>Select task to add</option>'
+                ]
+                    .concat(data.map(task => `<option value="${task._id}">${task.name}</option>`));
+                fields.process.push({
+                    id: 'add_task',
+                    label: 'Task',
+                    type: 'select',
+                    options: taskOptions,
+                    onchange: "AddgetTaskDetailsProcess(this.value)"
+                });
+                fields.process.push(userField);
+                renderForm(fields[entityType]);
             });
+        } else if (entityType === 'sensor') {
+            fields.sensor.push(userField);
             renderForm(fields[entityType]);
-        });
-    } else {
-        renderForm(fields[entityType]);
-    }
+        } else {
+            renderForm(fields[entityType]);
+        }
+    });
 }
 
 function renderForm(fields) {
@@ -202,19 +236,41 @@ function addTaskToProcess() {
     $('#addtaskModalProcess').modal('hide');
 }
 
+function addUserToOwner() {
+    const userId = $('#_addUserId').val(); // Get user ID from modal
+    const userName = $('#addUserName').val();  // קבלת שם המשתמש מתוך המודאל
+    if (userId && userName) {
+        selectedUsers = userName;  // שמירת שם המשתמש במשתנה
+        alert(`User ${userName} added successfully!`);
+    } else {
+        alert('This user is already added.');
+    }
+    $('#addUserModal').modal('hide');
+}
+
 function saveNewEntity(entityType) {
     if (!validateForm(entityType)) {
         return;
+    }
+     if (!selectedUsers || selectedUsers.trim() === '') {
+        alert('You must select owner!');
+        return; 
     }
     const entityData = {};
     $('#addForm input, #addForm textarea').each(function () {
         entityData[$(this).attr('id')] = $(this).val();
     });
     if (entityType === 'task') {
-        entityData.sensors = selectedSensors;  
+        entityData.sensors = selectedSensors;
+        entityData.owner = selectedUsers;
     }
     if (entityType === 'process') {
-        entityData.tasks = selectedTasks; // Add the selected task IDs to the process data
+        entityData.tasks = selectedTasks;
+        entityData.owner = selectedUsers;
+    }
+    if (entityType === 'sensor') {
+        entityData.owner = selectedUsers;
+
     }
     $.ajax({
         url: '/add_entity',
@@ -226,6 +282,7 @@ function saveNewEntity(entityType) {
             $('#addModal').modal('hide');
             selectedSensors = [];
             selectedTasks = [];
+            selectedUsers = '';
         },
         error: function (xhr, status, error) {
             console.error("Error:", error);

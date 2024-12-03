@@ -39,6 +39,20 @@ function loadSensors() {
         });
     });
     $('#sensorModal').show();
+    loadOwners('sensorowner'); // קריאה לפונקציה עם מזהה השדה
+}
+
+function loadOwners(selectId) {
+    const selectElement = $(`#${selectId}`);
+    selectElement.empty().append('<option value="" disabled selected hidden>Select owner to edit</option>');
+    
+    $.get('/users', function (data) {
+        data.forEach(owner => {
+            selectElement.append(`<option value="${owner.name}">${owner.name}</option>`);
+        });
+    }).fail(function () {
+        alert("Failed to load owners.");
+    });
 }
 
 function getSensorDetails(sensorId) {
@@ -219,6 +233,7 @@ function loadTasks() {
         });
     });
     $('#taskModal').show();
+    loadOwners('taskowner'); // קריאה לפונקציה עם מזהה השדה
 }
 
 function getTaskDetails(taskId) {
@@ -295,6 +310,7 @@ function loadProcesses() {
         });
     });
     $('#processModal').show();
+    loadOwners('owner'); // קריאה לפונקציה עם מזהה השדה
 }
 
 function getProcessDetails(processId) {

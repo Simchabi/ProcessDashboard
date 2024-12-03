@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>add page</title>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/button_style.css') }}">
@@ -13,9 +13,9 @@
 </head>
 
 <body>
-    
+
     <div class="container mt-5">
-       <!-- <h1>Process Management - Addition</h1>-->
+        <!-- <h1>Process Management - Addition</h1>-->
         <div class="action-buttons">
             <div class="button-container"> <!-- הוסף את זה -->
                 <button class="btn btn-custom" onclick="openAddForm('sensor')">
@@ -146,8 +146,41 @@
                 </div>
             </div>
         </div>
-      
     </div>
+    <!-- Modal to display user details -->
+    <div class="modal" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Details</h5>
+                    <button type="button" class="btn-close" onclick="$('#addUserModal').modal('hide')"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <input type="hidden" id="_addUserId">
+                        <div class="mb-3">
+                            <label for="addUserName" class="form-label">Name</label>
+                            <input type="text" id="addUserName" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addUserRole" class="form-label">Role</label>
+                            <input type="text" id="addUserRole" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addUserTeam" class="form-label">Team</label>
+                            <input type="text" id="addUserTeam" class="form-control" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="addUserPermission" class="form-label">Permission</label>
+                            <input type="text" id="addUserPermission" class="form-control" readonly>
+                        </div>
+                        <button type="button" id="addUserButton" class="btn btn-primary" onclick="addUserToOwner()">Add User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div style="text-align: center; margin-top: 20px;">
         <!--<a href="/" class="btn-scroll">to the main page</a>-->
         <a href="/#dashboard-section" class="btn-scroll">to the main page</a>
@@ -155,7 +188,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/addScripts.js') }}"></script>
-    
+
 </body>
 
 </html>

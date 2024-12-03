@@ -88,10 +88,17 @@ def get_tasks():
         task['_id'] = str(task['_id'])
     return jsonify(tasks), 200
 
+
 # Route to fetch task by ID
 @app.route('/task/<task_id>', methods=['GET'])
 def get_task(task_id):
     task = task_collection.find_one({'_id': ObjectId(task_id)})
+     # המרת תאריך לפורמט YYYY-MM-DDTHH:MM
+    if task['start_date']:
+        task['start_date'] = task['start_date'].strftime('%Y-%m-%dT%H:%M')  # המרת לתאריך בפורמט הנדרש
+    if task['end_date']:
+        task['end_date'] = task['end_date'].strftime('%Y-%m-%dT%H:%M')  # המרת לתאריך בפורמט הנדרש
+
     task['_id'] = str(task['_id']) 
     return jsonify(task), 200
 
@@ -107,6 +114,12 @@ def get_processes():
 @app.route('/process/<process_id>', methods=['GET'])
 def get_process(process_id):
     process = process_collection.find_one({'_id': ObjectId(process_id)})
+    if process:
+     if 'Start_Time' in process:
+        process['Start_Time'] = process['Start_Time'].strftime('%Y-%m-%dT%H:%M') if isinstance(process['Start_Time'], datetime) else process['Start_Time']
+     if 'finish_time' in process:
+        process['finish_time'] = process['finish_time'].strftime('%Y-%m-%dT%H:%M') if isinstance(process['finish_time'], datetime) else process['finish_time']
+
     process['_id'] = str(process['_id']) 
     return jsonify(process), 200
 
@@ -143,6 +156,11 @@ def update_user(user_id):
 @app.route('/update_task/<task_id>', methods=['POST'])
 def update_task(task_id):
     data = request.get_json()
+     # אם קיימים תאריכים במידע, יש להמירם לפורמט datetime
+    if 'start_date' in data:
+        data['start_date'] = datetime.strptime(data['start_date'], '%Y-%m-%dT%H:%M')
+    if 'end_date' in data:
+        data['end_date'] = datetime.strptime(data['end_date'], '%Y-%m-%dT%H:%M')
     task_collection.update_one({'_id': ObjectId(task_id)}, {'$set': data})
     return jsonify({"message": "Task updated successfully"}), 200
 
@@ -181,11 +199,17 @@ def available_tasks(process_id):
 @app.route('/update_process/<process_id>', methods=['POST'])
 def update_process(process_id):
     data = request.get_json()
+     # המרה של start_time ו- finish_time אם הם קיימים
+    if 'Start_Time' in data:
+        data['Start_Time'] = datetime.strptime(data['Start_Time'], '%Y-%m-%dT%H:%M')
+    if 'finish_time' in data:
+        data['finish_time'] = datetime.strptime(data['finish_time'], '%Y-%m-%dT%H:%M')
+    
     if data is None:
         return jsonify({"error": "Invalid JSON"}), 400
     process_collection.update_one({'_id': ObjectId(process_id)}, {'$set': data})
     return jsonify({"message": "Process updated successfully"}), 200
-    
+ 
 # נתיב להוספת סנסור מהמשימה   
 @app.route('/add_sensor_task/<task_id>/<sensor_id>', methods=['POST'])
 def add_sensor_task(task_id, sensor_id):
@@ -260,16 +284,16 @@ def add_entity():
     required_fields = []
 
     if 'id' in data:
-        required_fields = ['id', 'name', 'owner', 'status']
+        required_fields = ['id', 'name', 'status']
         collection = db.sensor 
     elif 'Id' in data:
         required_fields = ['name', 'role', 'team', 'permission','password', 'Id']
         collection = db.user
     elif 'id_task' in data:
-        required_fields = ['id_task', 'description', 'name', 'owner', 'status','team', 'end_date','link', 'remarks', 'start_date'] 
+        required_fields = ['id_task', 'description', 'name', 'status','team', 'end_date','link', 'remarks', 'start_date'] 
         collection = db.task
     elif 'name' in data:
-        required_fields = ['name', 'description', 'owner','status','team','Start_Time', 'finish_time', 'client']
+        required_fields = ['name', 'description','status','team','Start_Time', 'finish_time', 'client']
         collection = db.process
 
     if collection is not None:
@@ -292,7 +316,17 @@ def add_entity():
                     return jsonify({"message": "id_task must be an Int32"}), 400
             except ValueError:
                 return jsonify({"message": "Invalid id_task format"}), 400
-            
+
+        # המרת תאריכים לפורמט datetime
+        date_fields = ['start_date', 'end_date', 'Start_Time', 'finish_time']
+        for field in date_fields:
+            if field in data:
+                try:
+                    # המרת הפורמט ל-ISO 8601 אם השדה קיים
+                    data[field] = datetime.fromisoformat(data[field].replace("Z", ""))
+                except ValueError:
+                    return jsonify({"message": f"Invalid date format for {field}. Use ISO 8601 format."}), 400
+                   
         collection.insert_one(data)
         return jsonify({"message": "Entity added successfully"}), 200
     else:
