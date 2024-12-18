@@ -404,9 +404,140 @@ tr:hover {
     display: none; /* מסתיר את הגיף כברירת מחדל */
 }
 
+/*שתמיד הקישור יהיה כחול*/
+a:link, a:visited {
+    color: blue;
+    text-decoration: underline;
+}
 
+a:hover {
+    color: darkblue;
+}
 
-
+a:active {
+    color: blue;
+}
 
 /*#7176f4
 /*f4e4ff סגול בהיר
+
+
+/* עיצוב לחלון הקופץ */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* רקע חצי שקוף */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.popup-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px; /* מרווח מתחת לכותרת */
+    text-align: center;
+    color: #8115ad;
+}
+
+/* תוכן החלון */
+.popup-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    max-width: 1200px;
+    max-height: 90vh; /* גובה מקסימלי */
+    overflow-y: auto; /* גלילה אנכית לתוכן ארוך */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: fadeIn 0.3s ease;
+}
+
+/* אנימציה לפתיחת החלון */
+@keyframes fadeIn {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* כפתור סגירה */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.close-button:hover {
+    color: #100302; /* אדום בהיר בעת ריחוף */
+}
+
+/* עיצוב הטבלה */
+.styled-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.styled-table th, .styled-table td {
+    border: 1px solid #ddd;
+    padding: 12px; /* הגדלת הרווחים בתא */
+    text-align: center; /* יישור מרכזי */
+    vertical-align: middle; /* יישור אנכי */
+    word-wrap: break-word; /* שבירת שורות ארוכות */
+}
+
+.styled-table th {
+    background-color: #8115ad; /* סגול כהה */
+    color: #fff; /* צבע טקסט לבן */
+    font-weight: bold;
+    text-align: center;
+    padding: 12px; /* שמירה על רווחים */
+
+}
+
+.styled-table tr:nth-child(even) {
+    background-color: #a4a1a5; /* צבע רקע לסירוגין */
+}
+
+.styled-table tr:hover {
+    background-color: #6b6f79; /* צבע רקע בעת ריחוף */
+    transition: background-color 0.2s ease;
+}
+
+/* כפתור בתוך הטבלה */
+.table-button {
+    background-color: #007bff; /* צבע כחול */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s ease;
+}
+
+.table-button:hover {
+    background-color: #0056b3; /* כחול כהה יותר */
+}
+
+/* עיצוב אלמנט מוסתר */
+.hidden {
+    display: none;
+}
+

@@ -1,6 +1,4 @@
-//const statusCounts = JSON.parse('{{ status_counts | tojson | safe }}');
 const statusCounts = JSON.parse(document.getElementById('status-data').textContent);
-
 const ctx = document.getElementById('statusPieChart').getContext('2d');
 const statusData = {
     labels: ['בתהליך', 'הושלם', 'ממתין'],
@@ -40,9 +38,7 @@ function convertToDate(dateStr) {
 }
 
 // נתונים עבור התהליכים
-//const processes = JSON.parse('{{ processes | tojson | safe }}');
 const processes = JSON.parse(document.getElementById('process-data').textContent);
-// המרת הזמנים לאובייקטי Date
 const processData = processes.map(process => {
     return {
         ...process,
@@ -69,14 +65,12 @@ Plotly.newPlot('process-chart', graphData, {
     title: '',
     barmode: 'stack',
     xaxis: {
-        //title: 'Date',
         type: 'date',
         tickformat: '%d/%m/%Y %H:%M',
-        tickmode: 'array',//auto
+        tickmode: 'array',
         tickvals: sortedProcesses.map(process => new Date(process.start_time)),
     },
     yaxis: {
-        //title: 'Processes',
         tickmode: 'array',
         tickvals: sortedProcesses.map((_, index) => index),
         ticktext: sortedProcesses.map(process => process.name),
@@ -85,7 +79,7 @@ Plotly.newPlot('process-chart', graphData, {
 
 // אירוע לחיצה על תהליך
 document.getElementById('process-chart').on('plotly_click', function (data) {
-    const processName = data.points[0].y; // שם התהליך שנבחר
+    const processName = data.points[0].y; 
     const process = processes.find(p => p.name === processName);
 
     if (process) {
@@ -118,14 +112,12 @@ document.getElementById('process-chart').on('plotly_click', function (data) {
                 title: `Tasks for Process: ${process.name}`,
                 barmode: 'stack',
                 xaxis: {
-                    //title: 'Date',
                     type: 'date',
                     tickformat: '%d/%m/%Y %H:%M',
-                    tickmode: 'array',//auto
+                    tickmode: 'array',
                     tickvals: sortedtasks.map(task => new Date(task.start_date)),
                 },
                 yaxis: {
-                    //title: 'Tasks',
                     tickmode: 'array',
                     tickvals: tasks.map((_, index) => index),
                     ticktext: tasks.map(task => task.name)
@@ -134,3 +126,89 @@ document.getElementById('process-chart').on('plotly_click', function (data) {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const popupContainer = document.getElementById("popup-container");
+    const popupContent = document.querySelector(".popup-content");
+    const closeButton = document.querySelector(".close-button");
+    const taskTableBody = document.getElementById("popup-task-table").querySelector("tbody");
+    const popupTitle = document.querySelector(".popup-title");
+
+    // פונקציה להמיר את התאריך לפורמט הרצוי
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${day}/${month}/${year} ${hours}:${minutes}`;
+    }
+
+    // טיפול בלחיצה על שורה בטבלה
+    document.querySelectorAll("#data-table-section table tbody tr").forEach((row) => {
+        row.addEventListener("click", () => {
+            const processId = row.dataset.processId; 
+            const processName = row.querySelector(".process-name").textContent; // נניח שיש עמודה עם שם התהליך
+
+        // עדכון כותרת הפופאפ
+        popupTitle.textContent = `המשימות של: ${processName}`;
+            // בקשת AJAX לשרת לשליפת המשימות הקשורות לתהליך
+            fetch(`/process_tasks/${processId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tasks = data.tasks || []; 
+                    taskTableBody.innerHTML = "";
+
+                    // בדיקה אם נמצאו משימות
+                    if (tasks.length === 0) {
+                        taskTableBody.innerHTML = "<tr><td colspan='6'>לא נמצאו משימות</td></tr>";
+                    } else {
+                        // שליפת פרטי כל משימה על ידי ה-IDs של המשימות
+                        tasks.forEach(taskId => {
+                            // בקשת AJAX נוספת לכל משימה כדי לשלוף את פרטי המשימה
+                            fetch(`/taskID/${taskId}`)
+                                .then(response => response.json())
+                                .then(task => {
+                                    // יצירת שורה חדשה בטבלה עם פרטי המשימה
+                                    const row = document.createElement("tr");
+                                    row.innerHTML = `
+                                        <td>${task.name}</td>
+                                        <td><a href="${task.report_link}" target="_blank">${task.report_link}</a></td>
+                                        <td>${task.status}</td>
+                                        <td>${formatDate(task.start_date)}</td>
+                                        <td>${formatDate(task.end_date)}</td>
+                                        <td>${task.owner}</td>
+                                    `;
+                                    taskTableBody.appendChild(row);
+                                })
+                                .catch(error => {
+                                    console.error("Error fetching task:", error);
+                                    taskTableBody.innerHTML = "<tr><td colspan='6'>שגיאה בשליפת משימה</td></tr>";
+                                });
+                        });
+                    }
+                    // הצגת החלון הקופץ
+                    popupContainer.classList.remove("hidden");
+                })
+                .catch(error => {
+                    console.error("Error fetching tasks:", error);
+                    taskTableBody.innerHTML = "<tr><td colspan='6'>שגיאה בשליפת משימות</td></tr>";
+                });
+        });
+    });
+
+    // סגירת החלון הקופץ בלחיצה על כפתור הסגירה
+    closeButton.addEventListener("click", () => {
+        popupContainer.classList.add("hidden");
+    });
+
+    // סגירת החלון הקופץ בלחיצה מחוץ לחלון
+    popupContainer.addEventListener("click", (event) => {
+        if (event.target === popupContainer) {
+            popupContainer.classList.add("hidden");
+        }
+    });
+});
+

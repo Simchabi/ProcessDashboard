@@ -290,10 +290,10 @@ def add_entity():
         required_fields = ['name', 'role', 'team', 'permission','password', 'Id']
         collection = db.user
     elif 'id_task' in data:
-        required_fields = ['id_task', 'description', 'name', 'status','team', 'end_date','link', 'remarks', 'start_date'] 
+        required_fields = ['id_task', 'description', 'name', 'status','team', 'end_date','report_link', 'remarks', 'start_date'] 
         collection = db.task
     elif 'name' in data:
-        required_fields = ['name', 'description','status','team','Start_Time', 'finish_time', 'client']
+        required_fields = ['name', 'report_link','status','team','Start_Time', 'finish_time', 'client']
         collection = db.process
 
     if collection is not None:
@@ -440,7 +440,7 @@ def dashboard():
         {
             'id': str(process['_id']),
             'name': process['name'],
-            'description': process['description'],
+            'report_link': process['report_link'],
             'status': process['status'],
             'start_time': format_time(process.get('Start_Time', ''), 'process'),
             'finish_time': format_time(process.get('finish_time', ''), 'process'),

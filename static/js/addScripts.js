@@ -15,10 +15,10 @@ function validateForm(entityType) {
             requiredFields = ['name', 'role', 'team', 'permission', 'password', 'Id'];
             break;
         case 'task':
-            requiredFields = ['id_task', 'description', 'name', 'status', 'team', 'end_date', 'link', 'remarks', 'start_date'];
+            requiredFields = ['id_task', 'description', 'name', 'status', 'team', 'end_date', 'report_link', 'remarks', 'start_date'];
             break;
         case 'process':
-            requiredFields = ['name', 'description', 'status', 'team', 'Start_Time', 'finish_time', 'client'];
+            requiredFields = ['name', 'report_link', 'status', 'team', 'Start_Time', 'finish_time', 'client'];
             break;
     }
 
@@ -62,7 +62,7 @@ function AddgetTaskDetailsProcess(taskId) {
             $('#addtaskteam').val(data.team);
             $('#addstartDate').val(data.start_date);
             $('#addendDate').val(data.end_date);
-            $('#addlink').val(data.link);
+            $('#addreport_link').val(data.report_link);
             $('#addremarks').val(data.remarks);
             $('#addtaskModalProcess').modal('show');
         });
@@ -112,12 +112,12 @@ function openAddForm(entityType) {
             { id: 'team', label: 'Team', type: 'text' },
             { id: 'start_date', label: 'Start Date', type: 'datetime-local' },
             { id: 'end_date', label: 'End Date', type: 'datetime-local' },
-            { id: 'link', label: 'Link', type: 'url' },
+            { id: 'report_link', label: 'Report_link', type: 'url' },
             { id: 'remarks', label: 'Remarks', type: 'textarea' }
         ],
         process: [
             { id: 'name', label: 'Name', type: 'text' },
-            { id: 'description', label: 'Description', type: 'text' },
+            { id: 'report_link', label: 'Report_link', type: 'text' },
             //  { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' },
             { id: 'team', label: 'Team', type: 'text' },

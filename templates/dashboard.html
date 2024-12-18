@@ -8,27 +8,13 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <!--- <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
-    <!-- <div class="container">
-        <h1> Dashboard</h1>
-        <h1> View by</h1>
-
-<div class="full-screen-navigation">
-    <div class="navigation-buttons">
-        <a href="#cards-section" class="btn-scroll">Division by Status</a>
-        <a href="#data-table-section" class="btn-scroll">Table</a>
-        <a href="#gantt-section" class="btn-scroll">Gantt Chart</a>
-    </div>
-</div>-->
-
     <div class="full-screen-navigation">
         <div class="content">
             <img src="{{ url_for('static', filename='dashboard.gif') }}" alt="dashboard GIF" class="custom-gif">
-            <!--<a href="https://lordicon.com/">Icons by Lordicon.com</a>-->
             <h1>Dashboard</h1>
             <h1>View by</h1>
             <div class="navigation-buttons">
@@ -43,9 +29,6 @@
         </div>
     </div>
 
-
-
-    <!-- <div class="cards">-->
     <div class="full-screen-section">
         <!-- כרטיסים להצגת נתונים עיקריים -->
         <div id="cards-section" class="cards">
@@ -74,16 +57,14 @@
         </div>
     </div>
 
-
-    <!-- טבלה -->
-
+    <!--  תהליכים טבלה -->
     <div class="full-screen-table">
         <div id="data-table-section">
             <table>
                 <thead>
                     <tr>
                         <th>שם פרויקט</th>
-                        <th>תיאור</th>
+                        <th>לינק לדוח</th>
                         <th>סטטוס</th>
                         <th>זמן התחלה</th>
                         <th>זמן סיום</th>
@@ -92,9 +73,11 @@
                 </thead>
                 <tbody>
                     {% for process in processes %}
-                    <tr>
-                        <td>{{ process.name }}</td>
-                        <td>{{ process.description }}</td>
+                    <tr data-process-id="{{ process.id }}">
+                        <td class="process-name">{{ process.name }}</td>
+                        <td> <a href="{{ process.report_link }}" target="_blank">
+                                {{ process.report_link }}
+                            </a></td>
                         <td class="status {{ process.status | lower }}">{{ process.status }}</td>
                         <td>{{ process.start_time }}</td>
                         <td>{{ process.finish_time }}</td>
@@ -106,10 +89,30 @@
         </div>
     </div>
 
+    <!--  משימות טבלה -->
+    <div id="popup-container" class="popup hidden">
+        <div class="popup-content">
+            <span class="close-button">&times;</span>
+            <h2 class="popup-title">המשימות של:</h2>
+            <table class="styled-table" id="popup-task-table">
+                <thead>
+                    <tr>
+                        <th>שם המשימה</th>
+                        <th>לינק לדוח</th>
+                        <th>סטטוס</th>
+                        <th>תאריך התחלה</th>
+                        <th>תאריך סיום</th>
+                        <th>מנהל המשימה</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- תוכן המשימות יתווסף כאן דינאמית -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <!-- Gantt for Processes -->
-    <!--  <div class="gantt-container">-->
-
     <div id="gantt-section" class="gantt-container">
         <h2>Gantt for Processes</h2>
         <div id="process-chart" class="gantt-chart"></div>

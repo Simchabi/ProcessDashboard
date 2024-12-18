@@ -127,7 +127,7 @@ function getTaskDetails(taskId) {
             $('#taskteam').val(task.team);
             $('#startDate').val(task.start_date);
             $('#endDate').val(task.end_date);
-            $('#link').val(task.link);
+            $('#report_link').val(task.report_link);
             $('#remarks').val(task.remarks);
 
             // Populate the sensors dropdown
@@ -175,7 +175,7 @@ function getProcessDetails(processId) {
             $('#process_id').val(data._id);
             $('#processName').val(data.name);
             $('#client').val(data.client);
-            $('#processdescription').val(data.description);
+            $('#processreport_link').val(data.report_link);
             $('#owner').val(data.owner);
             $('#status').val(data.status);
             $('#team').val(data.team);

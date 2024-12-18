@@ -128,7 +128,7 @@ function getTaskDetailsProcess(taskId) {
             $('#deletetaskteam').val(data.team);
             $('#deletestartDate').val(data.start_date);
             $('#deleteendDate').val(data.end_date);
-            $('#deletelink').val(data.link);
+            $('#deletereport_link').val(data.report_link);
             $('#deleteremarks').val(data.remarks);
             $('#taskModalProcess').modal('show');
         });
@@ -147,7 +147,7 @@ function AddgetTaskDetailsProcess(taskId) {
             $('#addtaskteam').val(data.team);
             $('#addstartDate').val(data.start_date);
             $('#addendDate').val(data.end_date);
-            $('#addlink').val(data.link);
+            $('#addreport_link').val(data.report_link);
             $('#addremarks').val(data.remarks);
             $('#addtaskModalProcess').modal('show');
         });
@@ -248,7 +248,7 @@ function getTaskDetails(taskId) {
             $('#taskteam').val(task.team);
             $('#startDate').val(task.start_date);
             $('#endDate').val(task.end_date);
-            $('#link').val(task.link);
+            $('#report_link').val(task.report_link);
             $('#remarks').val(task.remarks);
 
             $('#tasksensorSelect').empty().append('<option value="" disabled selected hidden>Select sensor to delete</option>');
@@ -276,7 +276,7 @@ function saveTaskChanges() {
         team: $('#taskteam').val(),
         start_date: $('#startDate').val(),
         end_date: $('#endDate').val(),
-        link: $('#link').val(),
+        report_link: $('#report_link').val(),
         remarks: $('#remarks').val(),
         sensors: sensors  
     };
@@ -319,7 +319,7 @@ function getProcessDetails(processId) {
             $('#process_id').val(data._id);
             $('#processName').val(data.name);
             $('#client').val(data.client);
-            $('#processdescription').val(data.description);
+            $('#processreport_link').val(data.report_link);
             $('#owner').val(data.owner);
             $('#status').val(data.status);
             $('#team').val(data.team);
@@ -346,7 +346,7 @@ function saveProcessChanges() {
     const data = {
         name: $('#processName').val(),
         client: $('#client').val(),
-        description: $('#processdescription').val(),
+        report_link: $('#processreport_link').val(),
         owner: $('#owner').val(),
         status: $('#status').val(),
         team: $('#team').val(),
