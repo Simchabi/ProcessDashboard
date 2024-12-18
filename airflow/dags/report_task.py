@@ -5,14 +5,12 @@ from pymongo import MongoClient
 from docx import Document
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
-from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from time import sleep
+from google.oauth2.service_account import Credentials
 from googleapiclient.errors import HttpError
 import os
-import pickle
 import re
+from time import sleep
 
 
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
@@ -25,32 +23,15 @@ def connect_to_mongo():
     return client
 
 
+# פונקציה לאימות עם Google Drive באמצעות Service Account
 def authenticate_google_drive():
-    creds = None
-    token_path = '/opt/airflow/dags/token.pickle'  # נתיב קובץ הטוקן
-
-    # בדיקה אם קובץ האסימונים (pickle) קיים
-    if os.path.exists(token_path):
-        with open(token_path, 'rb') as token:
-            creds = pickle.load(token)
-
-    # אם אין קרדנציאלס או שהם לא תקפים
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                '/opt/airflow/dags/credentials.json', SCOPES)
-            creds = flow.run_console()  # שימוש באימות דרך מסוף
-
-        # שמירת הקרדנציאלס לקובץ pickle
-        with open(token_path, 'wb') as token:
-            pickle.dump(creds, token)
-
-    # יצירת חיבור ל-Google Drive API
-    return build('drive', 'v3', credentials=creds)
+    service_account_file = '/opt/airflow/dags/service_account.json'  # נתיב לקובץ ה-Service Account
+    credentials = Credentials.from_service_account_file(
+        service_account_file, scopes=SCOPES)
+    return build('drive', 'v3', credentials=credentials)
 
 
+# פונקציה להעלאת קובץ ל-Google Drive
 def upload_to_drive(filename):
     service = authenticate_google_drive()
     file_metadata = {
@@ -113,7 +94,7 @@ def get_completed_task_details():
     all_tasks = tasks_collection.find()
 
     for task in all_tasks:
-        link = task.get('link', '')  # שדה link במקום description
+        link = task.get('report_link', '')  # שדה link במקום description
         drive_file_id = extract_drive_file_id(link)  # שימוש ב-link במקום description
 
         if task['status'] == "הושלם":
@@ -127,7 +108,6 @@ def get_completed_task_details():
                 document.add_paragraph(f"צוות: {task['team']}")
                 document.add_paragraph(f"התחלה: {datetime_to_str(task['start_date'])}")
                 document.add_paragraph(f"סיום: {datetime_to_str(task['end_date'])}")
-
 
                 # הוספת פרטי הסנסורים
                 if 'sensors' in task:
@@ -151,7 +131,7 @@ def get_completed_task_details():
                 # עדכון שדה ה-link בקולקשן
                 tasks_collection.update_one(
                     {'_id': task['_id']},
-                    {'$set': {'link': share_link}}
+                    {'$set': {'report_link': share_link}}
                 )
                 print(f"דוח עבור המשימה {task['name']} הועלה וקישור השיתוף עודכן.")
         else:
@@ -159,7 +139,7 @@ def get_completed_task_details():
                 delete_file_from_drive(drive_file_id)  # מחיקת הקובץ בדרייב
                 tasks_collection.update_one(
                     {'_id': task['_id']},
-                    {'$set': {'link': ''}}  # הסרת הקישור מהשדה link
+                    {'$set': {'report_link': ''}}  # הסרת הקישור מהשדה link
                 )
                 print(f"קישור השיתוף עבור המשימה {task['name']} הוסר.")
 
