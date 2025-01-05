@@ -13,33 +13,30 @@ from time import sleep
 
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
-
-# פונקציה להתחברות ל-MongoDB
+# Function to connect to MongoDB
 def connect_to_mongo():
     uri = "mongodb+srv://simchab667:GesJiqzTeqyHsdp5@cluster0.yhfpz1v.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     client = MongoClient(uri)
     return client
 
-
-# פונקציה לאימות עם Google Drive באמצעות Service Account
+# Function to authenticate with Google Drive using Service Account
 def authenticate_google_drive():
-    service_account_file = '/opt/airflow/dags/service_account.json'  # נתיב לקובץ ה-Service Account
+    service_account_file = '/opt/airflow/dags/service_account.json'  
     creds = Credentials.from_service_account_file(service_account_file, scopes=SCOPES)
     return build('drive', 'v3', credentials=creds)
 
-
-# פונקציה להעלאת קובץ ל-Google Drive
+# Function to upload a file to Google Drive
 def upload_to_drive(filename):
     service = authenticate_google_drive()
     file_metadata = {
         'name': os.path.basename(filename),
-        'parents': ['1MCoZ9GJAkIei61I_m2rRhCW44bLbbMpo']  # הוספת ה-folder_id כאן
+        'parents': ['1MCoZ9GJAkIei61I_m2rRhCW44bLbbMpo']  
     }
     media = MediaFileUpload(
         filename, mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     )
 
-    for attempt in range(5):  # ננסה עד 5 פעמים
+    for attempt in range(5): 
         try:
             file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
             print(f"הקובץ הועלה בהצלחה ל-Google Drive. File ID: {file.get('id')}")
@@ -48,12 +45,11 @@ def upload_to_drive(filename):
             print(f"שגיאה ב-HTTP: {error}")
             if attempt < 4:
                 print("ממתינים 5 שניות לפני ניסיון חוזר...")
-                sleep(5)  # המתנה של 5 שניות
+                sleep(5) 
             else:
                 raise
 
-
-# פונקציה למחיקת קובץ מגוגל דרייב
+# Function to delete a file from Google Drive
 def delete_file_from_drive(file_id):
     service = authenticate_google_drive()
     try:
@@ -62,25 +58,20 @@ def delete_file_from_drive(file_id):
     except HttpError as error:
         print(f"שגיאה במחיקת קובץ מגוגל דרייב: {error}")
 
-
-# פונקציה לבדוק אם התיאור מכיל קישור ל-Google Drive
 def extract_drive_file_id(link):
     match = re.search(r"https://drive.google.com/file/d/([a-zA-Z0-9_-]+)/view", link)
     return match.group(1) if match else None
 
-
-# פונקציה ליצירת קישור שיתוף של הקובץ
 def get_drive_share_link(file_id, service):
     permission = {
-        'type': 'anyone',  # קישור לשיתוף ציבורי
-        'role': 'reader'  # קריאה בלבד
+        'type': 'anyone',  # Public share link
+        'role': 'reader'  # Read only
     }
     service.permissions().create(fileId=file_id, body=permission).execute()
     share_link = f"https://drive.google.com/file/d/{file_id}/view?usp=sharing"
     return share_link
 
-
-# פונקציה עיקרית לעיבוד תהליכים
+# Main function to process processes
 def get_process_details():
     client = connect_to_mongo()
     db = client.get_database('MyDB')
@@ -88,7 +79,6 @@ def get_process_details():
     tasks_collection = db.get_collection('task')
     sensors_collection = db.get_collection('sensor')
 
-    # עיבוד תהליכים
     all_processes = processes_collection.find()
 
     for process in all_processes:
@@ -96,11 +86,10 @@ def get_process_details():
         drive_file_id = extract_drive_file_id(link)
 
         if process['status'] == "הושלם":
-            if not drive_file_id:  # אין קישור לדרייב
-                # יצירת דוח חדש
+            if not drive_file_id: 
+                # Create a new report
                 document = Document()
                 document.add_heading(f'דוח עבור תהליך: {process["name"]}', level=1)
-                #document.add_paragraph(f"תיאור: {process['report_link']}")
                 document.add_paragraph(f"בעלים: {process['owner']}")
                 document.add_paragraph(f"סטטוס: {process['status']}")
                 document.add_paragraph(f"צוות: {process['team']}")
@@ -108,7 +97,7 @@ def get_process_details():
                 document.add_paragraph(f"סיום: {datetime_to_str(process['finish_time'])}")
                 document.add_paragraph(f"לקוח: {process['client']}")
 
-                # הוספת פרטי המשימות
+              # Adding task details
                 document.add_heading("משימות:", level=2)
                 if 'tasks' in process:
                     for task_id in process['tasks']:
@@ -122,7 +111,7 @@ def get_process_details():
                             document.add_paragraph(f"סיום: {datetime_to_str(task['end_date'])}")
                             document.add_paragraph(f"הערות: {task['remarks']}")
 
-                            # הוספת פרטי הסנסורים
+                          # Add sensor details
                             if 'sensors' in task:
                                 document.add_heading("סנסורים:", level=3)
                                 for sensor_id in task['sensors']:
@@ -131,44 +120,42 @@ def get_process_details():
                                         document.add_paragraph(f"סנסור: {sensor['name']}", style='List Bullet')
                                         document.add_paragraph(f"סטטוס: {sensor['status']}")
 
-                # שמירת הקובץ
+                # Save the file
                 report_filename = f"{process['name']}.docx"
-                temp_report_path = f"/tmp/{report_filename}"  # שמירה זמנית לפני העלאה
+                temp_report_path = f"/tmp/{report_filename}" # Save temporarily before uploading
                 document.save(temp_report_path)
 
-                # העלאה ל-Google Drive
+                # Upload to Google Drive
                 file_id = upload_to_drive(temp_report_path)
                 service = authenticate_google_drive()
                 share_link = get_drive_share_link(file_id, service)
 
-                # עדכון התיאור עם קישור השיתוף
+                # Update the description with the share link
                 processes_collection.update_one(
                     {'_id': process['_id']},
                     {'$set': {'report_link': share_link}}
                 )
                 print(f"דוח עבור התהליך {process['name']} הועלה וקישור השיתוף עודכן.")
         else:
-            if drive_file_id:  # אם יש קישור לדרייב בתיאור
-                delete_file_from_drive(drive_file_id)  # מחיקת הקובץ בדרייב
+            if drive_file_id: 
+                delete_file_from_drive(drive_file_id)  
                 processes_collection.update_one(
                     {'_id': process['_id']},
-                    {'$set': {'report_link': ''}}  # הסרת הקישור מהתיאור
+                    {'$set': {'report_link': ''}}  # Remove the link from the
                 )
                 print(f"קישור השיתוף עבור התהליך {process['name']} הוסר.")
 
-
-# פונקציה להמיר אובייקטי datetime למחרוזת בפורמט של תאריך ושעה
+# Function to convert datetime objects to a string in date and time format
 def datetime_to_str(dt):
     if isinstance(dt, datetime):
         return dt.strftime('%Y-%m-%d %H:%M:%S')
     return None
 
-
-# הגדרת ה-DAG
+# Setting up the DAG
 default_args = {
     'owner': 'Simcha',
     'depends_on_past': False,
-    'start_date': datetime(2024, 12, 5),  # תאריך התחלה קרוב
+    'start_date': datetime(2024, 12, 5),  
     'retries': 1,
 }
 
@@ -176,11 +163,11 @@ dag = DAG(
     'completed_process_report',
     default_args=default_args,
     description='DAG to generate a report for completed processes and upload it to Google Drive',
-    schedule_interval="0 0 * * *",  # ריצה כל יום ב-12:00 בלילה
-    catchup=False,  # ביטול השלמת משימות רטרואקטיביות
+    schedule_interval="0 0 * * *",  # Run every day at 00:00 AM
+    catchup=False, # Undo retroactive task completion
 )
 
-# משימה ליצירת הדוח והעלאתו לדרייב
+# Task to create the report and upload it to Drive
 generate_and_upload_report_task = PythonOperator(
     task_id='generate_and_upload_report',
     python_callable=get_process_details,

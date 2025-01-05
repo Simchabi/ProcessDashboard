@@ -1,20 +1,20 @@
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
     if (modalId === 'processModal') {
-        $('#processSelect').val(''); // איפוס הבחירה
-        $('#processSelect').empty().append('<option value="" disabled selected hidden>Select Process</option>'); // איפוס רשימת הבחירות
-        $('#processForm').hide(); // הסתרת הטופס
+        $('#processSelect').val(''); 
+        $('#processSelect').empty().append('<option value="" disabled selected hidden>Select Process</option>'); 
+        $('#processForm').hide(); 
     } else if (modalId === 'taskModal') {
         $('#taskSelect').val('');
-        $('#taskSelect').empty().append('<option value="" disabled selected hidden>Select Task</option>'); // איפוס רשימת הבחירות
+        $('#taskSelect').empty().append('<option value="" disabled selected hidden>Select Task</option>'); 
         $('#taskForm').hide();
     } else if (modalId === 'userModal') {
         $('#userSelect').val('');
-        $('#userSelect').empty().append('<option value="" disabled selected hidden>Select User</option>'); // איפוס רשימת הבחירות
+        $('#userSelect').empty().append('<option value="" disabled selected hidden>Select User</option>'); 
         $('#userForm').hide();
     } else if (modalId === 'sensorModal') {
         $('#sensorSelect').val('');
-        $('#sensorSelect').empty().append('<option value="" disabled selected hidden>Select Sensor</option>'); // איפוס רשימת הבחירות
+        $('#sensorSelect').empty().append('<option value="" disabled selected hidden>Select Sensor</option>'); 
         $('#sensorForm').hide();
     } else if (modalId === 'sensorModalTask') {
         $('#tasksensorSelect').val('');
@@ -39,7 +39,7 @@ function loadSensors() {
         });
     });
     $('#sensorModal').show();
-    loadOwners('sensorowner'); // קריאה לפונקציה עם מזהה השדה
+    loadOwners('sensorowner'); 
 }
 
 function loadOwners(selectId) {
@@ -168,7 +168,6 @@ function saveSensorChanges() {
         data: JSON.stringify(data),
         success: function (response) {
             alert(response.message);
-            //  loadSensors(); // למשל, טען מחדש את ה-sensors
             closeModal('sensorModal');
         },
         error: function (xhr, status, error) {
@@ -233,7 +232,7 @@ function loadTasks() {
         });
     });
     $('#taskModal').show();
-    loadOwners('taskowner'); // קריאה לפונקציה עם מזהה השדה
+    loadOwners('taskowner'); 
 }
 
 function getTaskDetails(taskId) {
@@ -253,7 +252,7 @@ function getTaskDetails(taskId) {
 
             $('#tasksensorSelect').empty().append('<option value="" disabled selected hidden>Select sensor to delete</option>');
             task.sensors.forEach(sensorId => {
-                $('#tasksensorSelect').append(`<option value="${sensorId}">${sensorId}</option>`); // Add sensors dynamically
+                $('#tasksensorSelect').append(`<option value="${sensorId}">${sensorId}</option>`); 
             });
             loadAvailableSensors(taskId);
             $('#taskForm').show();
@@ -263,10 +262,9 @@ function getTaskDetails(taskId) {
 
 function saveTaskChanges() {
     const taskId = $('#task_id').val();
-     // בודקים אם הסנסורים שונו. אם לא, לא נשלח אותם
      let sensors = $('#tasksensorSelect').val();
      if (!sensors) {
-         sensors = undefined;  // לא שולחים את הסנסורים אם לא נבחרו
+         sensors = undefined;  
      }
     const data = {
         name: $('#taskName').val(),
@@ -280,7 +278,6 @@ function saveTaskChanges() {
         remarks: $('#remarks').val(),
         sensors: sensors  
     };
-     // מוודאים שלא נשלחים ערכים לא מעודכנים
      const filteredData = {};
      for (const key in data) {
          if (data[key] !== undefined) {
@@ -310,7 +307,7 @@ function loadProcesses() {
         });
     });
     $('#processModal').show();
-    loadOwners('owner'); // קריאה לפונקציה עם מזהה השדה
+    loadOwners('owner'); 
 }
 
 function getProcessDetails(processId) {
@@ -328,7 +325,7 @@ function getProcessDetails(processId) {
 
             $('#processtaskSelect').empty().append('<option value="" disabled selected hidden>Select task to delete</option>');
             data.tasks.forEach(taskId => {
-                $('#processtaskSelect').append(`<option value="${taskId}">${taskId}</option>`); // Add tasks dynamically
+                $('#processtaskSelect').append(`<option value="${taskId}">${taskId}</option>`); 
             });
             loadAvailableTasks(processId);
             $('#processForm').show();
@@ -339,9 +336,8 @@ function getProcessDetails(processId) {
 function saveProcessChanges() {
     let tasks = $('#processtaskSelect').val();
     if (!tasks) {
-        tasks = undefined;  // לא שולחים את הסנסורים אם לא נבחרו
+        tasks = undefined;  
     }
-   // const selectedTaskIds = Array.from($('#taskIds option:selected')).map(option => option.value);
     const processId = $('#process_id').val();
     const data = {
         name: $('#processName').val(),
@@ -352,9 +348,8 @@ function saveProcessChanges() {
         team: $('#team').val(),
         Start_Time: $('#Start_Time').val(),
         finish_time: $('#finish_time').val(),
-        tasks: tasks // selectedTaskIds
+        tasks: tasks
     };
-    // מוודאים שלא נשלחים ערכים לא מעודכנים
     const filteredData = {};
     for (const key in data) {
         if (data[key] !== undefined) {
@@ -376,7 +371,6 @@ function saveProcessChanges() {
     });
 }
 
-// הוספת סנסור למשימה
 function addSensorToTask() {
     const taskId = $('#task_id').val();
     const sensorId = $('#addSensorSelect').val();
@@ -386,7 +380,6 @@ function addSensorToTask() {
             type: 'POST',
             success: function (result) {
                 alert(result.message);
-                // עדכון הרשימה - הוספת הסנסור לרשימת הסנסורים של המשימה
                 $('#addSensorSelect').append(`<option value="${sensorId}">${sensorId}</option>`);
                 getTaskDetails(taskId);
                 $('#addsensorModalTask').modal('hide');
@@ -398,7 +391,6 @@ function addSensorToTask() {
     }
 }
 
-// מחיקת סנסור ממשימה
 function deleteSensorToTask() {
     const taskId = $('#task_id').val();
     const sensorId = $('#tasksensorSelect').val();
@@ -408,7 +400,6 @@ function deleteSensorToTask() {
             type: 'DELETE',
             success: function (result) {
                 alert(result.message);
-                // הסרת הסנסור מהרשימה ב-UI
                 $(`#tasksensorSelect option[value="${sensorId}"]`).remove();
                 getTaskDetails(taskId);
                 $('#sensorModalTask').modal('hide');
@@ -420,7 +411,6 @@ function deleteSensorToTask() {
     }
 }
 
-// הוספת משימה לתהליך
 function addTaskToProcess() {
     const processId = $('#process_id').val();
     const taskId = $('#addTaskSelect').val();
@@ -430,7 +420,6 @@ function addTaskToProcess() {
             type: 'POST',
             success: function (result) {
                 alert(result.message);
-                // עדכון הרשימה - הוספת המשימה לרשימת המשימות בתהליך
                 $('#addTaskSelect').append(`<option value="${taskId}">${taskId}</option>`);
                 getProcessDetails(processId);
                 $('#addtaskModalProcess').modal('hide');
@@ -442,7 +431,6 @@ function addTaskToProcess() {
     }
 }
 
-// מחיקת משימה מתהליך
 function deleteTaskToProcess() {
     const processId = $('#process_id').val();
     const taskId = $('#deletetaskid').val();
@@ -452,7 +440,6 @@ function deleteTaskToProcess() {
             type: 'DELETE',
             success: function (result) {
                 alert(result.message);
-                // הסרת המשימה מהרשימה ב-UI
                 $(`#processTaskSelect option[value="${taskId}"]`).remove();
                 getProcessDetails(processId);
                 $('#taskModalProcess').modal('hide');

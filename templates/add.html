@@ -9,15 +9,13 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/button_style.css') }}">
-
 </head>
 
 <body>
 
     <div class="container mt-5">
-        <!-- <h1>Process Management - Addition</h1>-->
         <div class="action-buttons">
-            <div class="button-container"> <!-- הוסף את זה -->
+            <div class="button-container">
                 <button class="btn btn-custom" onclick="openAddForm('sensor')">
                     <i class="bi bi-plus-circle"></i> Add Sensor
                 </button>
@@ -30,10 +28,10 @@
                 <button class="btn btn-custom" onclick="openAddForm('process')">
                     <i class="bi bi-file-earmark-plus"></i> Add Process
                 </button>
-            </div> <!-- סיים את ה-div הזה -->
+            </div>
         </div>
 
-        <!-- Modal כללי להוספת ישות -->
+        <!-- General modal for adding an entity -->
         <div class="modal" id="addModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -42,9 +40,9 @@
                         <button type="button" class="btn-close" onclick="closeModal()"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- טופס דינמי בהתאם לסוג הישויות -->
+                        <!-- Dynamic form based on entity type -->
                         <form id="addForm" class="mt-3">
-                            <!-- שדות ייטענו כאן באופן דינמי -->
+                            <!-- Fields will be loaded here dynamically -->
                         </form>
                         <button type="button" class="btn btn-primary"
                             onclick="saveNewEntity(currentEntityType)">add</button>
@@ -147,6 +145,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal to display user details -->
     <div class="modal" id="addUserModal" tabindex="-1">
         <div class="modal-dialog">
@@ -174,7 +173,8 @@
                             <label for="addUserPermission" class="form-label">Permission</label>
                             <input type="text" id="addUserPermission" class="form-control" readonly>
                         </div>
-                        <button type="button" id="addUserButton" class="btn btn-primary" onclick="addUserToOwner()">Add User</button>
+                        <button type="button" id="addUserButton" class="btn btn-primary" onclick="addUserToOwner()">Add
+                            User</button>
                     </form>
                 </div>
             </div>
@@ -182,13 +182,11 @@
     </div>
 
     <div style="text-align: center; margin-top: 20px;">
-        <!--<a href="/" class="btn-scroll">to the main page</a>-->
         <a href="/#dashboard-section" class="btn-scroll">to the main page</a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/addScripts.js') }}"></script>
-
 </body>
 
 </html>

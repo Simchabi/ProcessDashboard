@@ -26,14 +26,12 @@ function validateForm(entityType) {
         const input = document.getElementById(field);
         if (!input.value) {
             allFilled = false;
-            emptyFields.push(field); // לאסוף את השדות הריקים
+            emptyFields.push(field); 
         }
     });
-
     if (!allFilled) {
-        alert(`The following fields are required: ${emptyFields.join(', ')}`); // הצגת רשימת שדות ריקים
+        alert(`The following fields are required: ${emptyFields.join(', ')}`); 
     }
-
     return allFilled;
 }
 
@@ -90,9 +88,8 @@ function openAddForm(entityType) {
 
     let fields = {
         sensor: [
-            { id: 'id', label: 'ID', type: 'number', readonly: false },//טקסט
+            { id: 'id', label: 'ID', type: 'number', readonly: false },
             { id: 'name', label: 'Name', type: 'text' },
-            //    { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' }
         ],
         user: [
@@ -104,10 +101,9 @@ function openAddForm(entityType) {
             { id: 'Id', label: 'ID', type: 'text', readonly: false }
         ],
         task: [
-            { id: 'id_task', label: 'ID', type: 'number', readonly: false },//text
+            { id: 'id_task', label: 'ID', type: 'number', readonly: false },
             { id: 'description', label: 'Description', type: 'text' },
             { id: 'name', label: 'Name', type: 'text' },
-            // { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' },
             { id: 'team', label: 'Team', type: 'text' },
             { id: 'start_date', label: 'Start Date', type: 'datetime-local' },
@@ -118,7 +114,6 @@ function openAddForm(entityType) {
         process: [
             { id: 'name', label: 'Name', type: 'text' },
             { id: 'report_link', label: 'Report_link', type: 'text' },
-            //  { id: 'owner', label: 'Owner', type: 'text' },
             { id: 'status', label: 'Status', type: 'text' },
             { id: 'team', label: 'Team', type: 'text' },
             { id: 'Start_Time', label: 'Start Time', type: 'datetime-local' },
@@ -204,18 +199,9 @@ function renderForm(fields) {
         `);
     });
 }
-//     fields[entityType].forEach(field => {
-//         $('#addForm').append(`
-//             <div class="mb-3">
-//                 <label for="${field.id}" class="form-label">${field.label}</label>
-//                 <input type="${field.type}" id="${field.id}" class="form-control" ${field.readonly ? 'readonly' : ''} autocomplete="off" required>
-//             </div>
-//         `);
-//     });
-// }
 
 function addSensorToTask() {
-    const sensorId = $('#addsensoridTask').val();  // השגת ה-ID של הסנסור שנבחר
+    const sensorId = $('#addsensoridTask').val();  
     if (sensorId && !selectedSensors.includes(parseInt(sensorId))) {
         selectedSensors.push(parseInt(sensorId));
         alert(`Sensor ${sensorId} added to the task!`);
@@ -237,10 +223,10 @@ function addTaskToProcess() {
 }
 
 function addUserToOwner() {
-    const userId = $('#_addUserId').val(); // Get user ID from modal
-    const userName = $('#addUserName').val();  // קבלת שם המשתמש מתוך המודאל
+    const userId = $('#_addUserId').val(); 
+    const userName = $('#addUserName').val();  
     if (userId && userName) {
-        selectedUsers = userName;  // שמירת שם המשתמש במשתנה
+        selectedUsers = userName;  
         alert(`User ${userName} added successfully!`);
     } else {
         alert('This user is already added.');

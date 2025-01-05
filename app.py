@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, Response
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from datetime import datetime
@@ -11,6 +11,11 @@ sensor_collection = db['sensor']
 user_collection = db['user']
 task_collection = db['task']
 process_collection = db['process']
+
+@app.after_request
+def add_csp(response: Response) -> Response:
+    response.headers['Content-Security-Policy'] = "frame-ancestors 'self' https://drive.google.com"
+    return response
 
 @app.route('/')
 def home():
@@ -29,7 +34,7 @@ def edit():
 # Route to fetch all sensors
 @app.route('/sensors', methods=['GET'])
 def get_sensors():
-    sensors = list(sensor_collection.find({}, {'_id': 1, 'name': 1}))  # Adjust the fields as needed
+    sensors = list(sensor_collection.find({}, {'_id': 1, 'name': 1}))  
     # Convert ObjectId to string
     for sensor in sensors:
         sensor['_id'] = str(sensor['_id'])
@@ -88,16 +93,14 @@ def get_tasks():
         task['_id'] = str(task['_id'])
     return jsonify(tasks), 200
 
-
 # Route to fetch task by ID
 @app.route('/task/<task_id>', methods=['GET'])
 def get_task(task_id):
     task = task_collection.find_one({'_id': ObjectId(task_id)})
-     # המרת תאריך לפורמט YYYY-MM-DDTHH:MM
     if task['start_date']:
-        task['start_date'] = task['start_date'].strftime('%Y-%m-%dT%H:%M')  # המרת לתאריך בפורמט הנדרש
+        task['start_date'] = task['start_date'].strftime('%Y-%m-%dT%H:%M')  
     if task['end_date']:
-        task['end_date'] = task['end_date'].strftime('%Y-%m-%dT%H:%M')  # המרת לתאריך בפורמט הנדרש
+        task['end_date'] = task['end_date'].strftime('%Y-%m-%dT%H:%M')
 
     task['_id'] = str(task['_id']) 
     return jsonify(task), 200
@@ -125,7 +128,6 @@ def get_process(process_id):
 
 @app.route('/process_tasks/<process_id>', methods=['GET'])
 def get_tasks_in_process(process_id):
-    # המרת ה-ID של התהליך לאובייקט ID של MongoDB
     try:
         process_id = ObjectId(process_id)
     except Exception as e:
@@ -133,7 +135,7 @@ def get_tasks_in_process(process_id):
 
     process = db.process.find_one({"_id": process_id})
     if process:
-        return jsonify({"tasks": process.get("tasks", [])})  # מחזיר את המערך של ה-ID של הטסקים
+        return jsonify({"tasks": process.get("tasks", [])}) 
     return jsonify({"error": "Process not found"}), 404
 
 # Update sensor
@@ -156,7 +158,6 @@ def update_user(user_id):
 @app.route('/update_task/<task_id>', methods=['POST'])
 def update_task(task_id):
     data = request.get_json()
-     # אם קיימים תאריכים במידע, יש להמירם לפורמט datetime
     if 'start_date' in data:
         data['start_date'] = datetime.strptime(data['start_date'], '%Y-%m-%dT%H:%M')
     if 'end_date' in data:
@@ -164,24 +165,21 @@ def update_task(task_id):
     task_collection.update_one({'_id': ObjectId(task_id)}, {'$set': data})
     return jsonify({"message": "Task updated successfully"}), 200
 
-# Endpoint להחזרת סנסורים זמינים שלא נמצאים בטסק
+# Endpoint to return available sensors that are not in the task
 @app.route('/available_sensors/<task_id>', methods=['GET'])
 def available_sensors(task_id):
-    # חיפוש הטסק לפי ID
     task = task_collection.find_one({'_id': ObjectId(task_id)})    
     if not task:
         return jsonify({"message": "Task not found"}), 404
 
-    # קבלת רשימת ה-IDs של הסנסורים שכבר נמצאים בטסק
     existing_sensor_ids = task.get('sensors', [])
-    # חיפוש כל הסנסורים שלא נמצאים ברשימה הקיימת של מזהי ה-int32
     available_sensors = list(sensor_collection.find({'id': {'$nin': existing_sensor_ids}}))
 
     for sensor in available_sensors:
         sensor['_id'] = str(sensor['_id'])
     return jsonify(available_sensors), 200
 
-# Endpoint להחזרת משימות זמינות שלא נמצאות בפרוסס
+# Endpoint for returning available tasks that are not in process
 @app.route('/available_tasks/<process_id>', methods=['GET'])
 def available_tasks(process_id):
     process = process_collection.find_one({'_id': ObjectId(process_id)})    
@@ -199,7 +197,6 @@ def available_tasks(process_id):
 @app.route('/update_process/<process_id>', methods=['POST'])
 def update_process(process_id):
     data = request.get_json()
-     # המרה של start_time ו- finish_time אם הם קיימים
     if 'Start_Time' in data:
         data['Start_Time'] = datetime.strptime(data['Start_Time'], '%Y-%m-%dT%H:%M')
     if 'finish_time' in data:
@@ -210,11 +207,10 @@ def update_process(process_id):
     process_collection.update_one({'_id': ObjectId(process_id)}, {'$set': data})
     return jsonify({"message": "Process updated successfully"}), 200
  
-# נתיב להוספת סנסור מהמשימה   
+# Path to add sensor from task  
 @app.route('/add_sensor_task/<task_id>/<sensor_id>', methods=['POST'])
 def add_sensor_task(task_id, sensor_id):
     try:
-        # עדכון המשימה על ידי הוספת הסנסור לרשימת הסנסורים
         result = task_collection.update_one(
             {"_id": ObjectId(task_id)},  
             {"$addToSet": {"sensors": int(sensor_id)}}  
@@ -227,11 +223,10 @@ def add_sensor_task(task_id, sensor_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# נתיב למחיקת סנסור מהמשימה
+# Path to delete a sensor from the task
 @app.route('/delete_sensor_task/<task_id>/<sensor_id>', methods=['DELETE'])
 def delete_sensor_task(task_id, sensor_id):
     try:
-        # הסרת הסנסור ממערך הסנסורים במשימה
         result = task_collection.update_one(
             {"_id": ObjectId(task_id)}, 
             {"$pull": {"sensors": int(sensor_id)}}  
@@ -243,10 +238,10 @@ def delete_sensor_task(task_id, sensor_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
+# Path to add a task to a process
 @app.route('/add_task_to_process/<process_id>/<task_id>', methods=['POST'])
 def add_task_to_process(process_id, task_id):
     try:
-        # הוספת המשימה למערך המשימות בתהליך
         result = process_collection.update_one(
             {"_id": ObjectId(process_id)},
             {"$addToSet": {"tasks": int(task_id)}}
@@ -258,10 +253,10 @@ def add_task_to_process(process_id, task_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# Path to delete a task from a process
 @app.route('/delete_task_from_process/<process_id>/<task_id>', methods=['DELETE'])
 def delete_task_from_process(process_id, task_id):
     try:
-        # הסרת המשימה ממערך המשימות בתהליך
         result = process_collection.update_one(
             {"_id": ObjectId(process_id)},
             {"$pull": {"tasks": int(task_id)}}
@@ -303,7 +298,7 @@ def add_entity():
 
         if 'id' in data:
             try:
-                data['id'] = int(data['id'])  # המרה למספר שלם
+                data['id'] = int(data['id'])  
                 if data['id'] < -2147483648 or data['id'] > 2147483647:
                     return jsonify({"message": "ID must be an Int32"}), 400
             except ValueError:
@@ -311,18 +306,16 @@ def add_entity():
             
         if 'id_task' in data:
             try:
-                data['id_task'] = int(data['id_task'])  # המרה למספר שלם
+                data['id_task'] = int(data['id_task'])  
                 if data['id_task'] < -2147483648 or data['id_task'] > 2147483647:
                     return jsonify({"message": "id_task must be an Int32"}), 400
             except ValueError:
                 return jsonify({"message": "Invalid id_task format"}), 400
 
-        # המרת תאריכים לפורמט datetime
         date_fields = ['start_date', 'end_date', 'Start_Time', 'finish_time']
         for field in date_fields:
             if field in data:
                 try:
-                    # המרת הפורמט ל-ISO 8601 אם השדה קיים
                     data[field] = datetime.fromisoformat(data[field].replace("Z", ""))
                 except ValueError:
                     return jsonify({"message": f"Invalid date format for {field}. Use ISO 8601 format."}), 400
@@ -388,7 +381,6 @@ def delete_process(process_id):
         return jsonify({'message': 'Process deleted successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 ######################
 @app.route('/tasks/<process_id>')
 def get_process_tasks(process_id):
@@ -409,18 +401,16 @@ def get_process_tasks(process_id):
         return jsonify({'error': 'Process not found'}), 404
 
 def format_time(time_str, time_type):
-    if isinstance(time_str, str):  # אם time_str הוא מחרוזת
+    if isinstance(time_str, str): 
         try:
-            # נניח שהתאריך במבנה של 'YYYY-MM-DD HH:MM'
             time_obj = datetime.strptime(time_str, '%Y-%m-%d %H:%M')
             return time_obj.strftime('%d/%m/%Y %H:%M')
         except ValueError:
-            return ''  # במקרה שהתאריך לא תקין
-    return time_str.strftime('%d/%m/%Y %H:%M')  # אם time_str כבר אובייקט datetime
+            return ''  
+    return time_str.strftime('%d/%m/%Y %H:%M') 
 
 @app.route('/dashboard')
 def dashboard():
-    # Retrieve all data from the 'process' collection
     processes = process_collection.find()
 
     # Count statuses
@@ -458,5 +448,3 @@ def dashboard():
 
 if __name__ == '__main__':
     app.run(port=5001)
-
-

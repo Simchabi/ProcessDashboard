@@ -12,37 +12,33 @@ import os
 import re
 from time import sleep
 
-
 SCOPES = ['https://www.googleapis.com/auth/drive.file']
 
-
-# פונקציה להתחברות ל-MongoDB
+# Function to connect to MongoDB
 def connect_to_mongo():
     uri = "mongodb+srv://simchab667:GesJiqzTeqyHsdp5@cluster0.yhfpz1v.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
     client = MongoClient(uri)
     return client
 
-
-# פונקציה לאימות עם Google Drive באמצעות Service Account
+# Function to authenticate with Google Drive using Service Account
 def authenticate_google_drive():
-    service_account_file = '/opt/airflow/dags/service_account.json'  # נתיב לקובץ ה-Service Account
+    service_account_file = '/opt/airflow/dags/service_account.json'  
     credentials = Credentials.from_service_account_file(
         service_account_file, scopes=SCOPES)
     return build('drive', 'v3', credentials=credentials)
 
-
-# פונקציה להעלאת קובץ ל-Google Drive
+# Function to upload a file to Google Drive
 def upload_to_drive(filename):
     service = authenticate_google_drive()
     file_metadata = {
         'name': os.path.basename(filename),
-        'parents': ['1MCoZ9GJAkIei61I_m2rRhCW44bLbbMpo']  # הוספת ה-folder_id כאן
+        'parents': ['1MCoZ9GJAkIei61I_m2rRhCW44bLbbMpo']  
     }
     media = MediaFileUpload(
         filename, mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     )
 
-    for attempt in range(5):  # ננסה עד 5 פעמים
+    for attempt in range(5): 
         try:
             file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
             print(f"הקובץ הועלה בהצלחה ל-Google Drive. File ID: {file.get('id')}")
@@ -51,12 +47,11 @@ def upload_to_drive(filename):
             print(f"שגיאה ב-HTTP: {error}")
             if attempt < 4:
                 print("ממתינים 5 שניות לפני ניסיון חוזר...")
-                sleep(5)  # המתנה של 5 שניות
+                sleep(5)  
             else:
                 raise
 
-
-# פונקציה למחיקת קובץ מגוגל דרייב
+# Function to delete a file from Google Drive
 def delete_file_from_drive(file_id):
     service = authenticate_google_drive()
     try:
@@ -65,41 +60,37 @@ def delete_file_from_drive(file_id):
     except HttpError as error:
         print(f"שגיאה במחיקת קובץ מגוגל דרייב: {error}")
 
-
-# פונקציה לבדוק אם התיאור מכיל קישור ל-Google Drive
+# Function to check if the description contains a link to Google Drive
 def extract_drive_file_id(link):
     match = re.search(r"https://drive.google.com/file/d/([a-zA-Z0-9_-]+)/view", link)
     return match.group(1) if match else None
 
-
-# פונקציה ליצירת קישור שיתוף של הקובץ
+# Function to create a share link for the file
 def get_drive_share_link(file_id, service):
     permission = {
-        'type': 'anyone',  # קישור לשיתוף ציבורי
-        'role': 'reader'  # קריאה בלבד
+        'type': 'anyone',  # Public share link
+        'role': 'reader'  # Read only
     }
     service.permissions().create(fileId=file_id, body=permission).execute()
     share_link = f"https://drive.google.com/file/d/{file_id}/view?usp=sharing"
     return share_link
 
-
-# פונקציה ליצירת דוחות נפרדים למשימות שהושלמו ולהעלאתם ל-Google Drive
+# Function to create separate reports for completed tasks and upload them to Google Drive
 def get_completed_task_details():
     client = connect_to_mongo()
     db = client.get_database('MyDB')
     tasks_collection = db.get_collection('task')
     sensors_collection = db.get_collection('sensor')
 
-    # עיבוד משימות
     all_tasks = tasks_collection.find()
 
     for task in all_tasks:
-        link = task.get('report_link', '')  # שדה link במקום description
-        drive_file_id = extract_drive_file_id(link)  # שימוש ב-link במקום description
+        link = task.get('report_link', '')  
+        drive_file_id = extract_drive_file_id(link)  
 
         if task['status'] == "הושלם":
-            if not drive_file_id:  # אין קישור לדרייב
-                # יצירת דוח חדש
+            if not drive_file_id:  
+               # Create a new report
                 document = Document()
                 document.add_heading(f'דוח עבור משימה: {task["name"]}', level=1)
                 document.add_paragraph(f"תיאור: {task['description']}")
@@ -109,7 +100,7 @@ def get_completed_task_details():
                 document.add_paragraph(f"התחלה: {datetime_to_str(task['start_date'])}")
                 document.add_paragraph(f"סיום: {datetime_to_str(task['end_date'])}")
 
-                # הוספת פרטי הסנסורים
+              # Adding sensor information
                 if 'sensors' in task:
                     document.add_heading("סנסורים:", level=2)
                     for sensor_id in task['sensors']:
@@ -118,44 +109,42 @@ def get_completed_task_details():
                             document.add_paragraph(f"סנסור: {sensor['name']}", style='List Bullet')
                             document.add_paragraph(f"סטטוס: {sensor['status']}")
 
-                # שמירה זמנית לפני העלאה
+               # Temporarily save before uploading
                 report_filename = f"{task['name']}.docx"
                 temp_report_path = f"/tmp/{report_filename}"
                 document.save(temp_report_path)
 
-                # העלאה ל-Google Drive
+                # Upload to Google Drive
                 file_id = upload_to_drive(temp_report_path)
                 service = authenticate_google_drive()
                 share_link = get_drive_share_link(file_id, service)
 
-                # עדכון שדה ה-link בקולקשן
+                # Update the link field in the collection
                 tasks_collection.update_one(
                     {'_id': task['_id']},
                     {'$set': {'report_link': share_link}}
                 )
                 print(f"דוח עבור המשימה {task['name']} הועלה וקישור השיתוף עודכן.")
         else:
-            if drive_file_id:  # אם יש קישור לדרייב
-                delete_file_from_drive(drive_file_id)  # מחיקת הקובץ בדרייב
+            if drive_file_id: 
+                delete_file_from_drive(drive_file_id)  # Delete the file on the drive
                 tasks_collection.update_one(
                     {'_id': task['_id']},
-                    {'$set': {'report_link': ''}}  # הסרת הקישור מהשדה link
+                    {'$set': {'report_link': ''}}  # Remove the link from the
                 )
                 print(f"קישור השיתוף עבור המשימה {task['name']} הוסר.")
 
-
-# פונקציה להמיר אובייקטי datetime למחרוזת בפורמט של תאריך ושעה
+# Function to convert datetime objects to a string in date and time format
 def datetime_to_str(dt):
     if isinstance(dt, datetime):
         return dt.strftime('%Y-%m-%d %H:%M:%S')
     return None
 
-
-# הגדרת ה-DAG
+# Setting up the DAG
 default_args = {
     'owner': 'Simcha',
     'depends_on_past': False,
-    'start_date': datetime(2024, 12, 5),  # תאריך התחלה קרוב
+    'start_date': datetime(2024, 12, 5), 
     'retries': 1,
 }
 
@@ -163,11 +152,11 @@ dag = DAG(
     'completed_task_report',
     default_args=default_args,
     description='DAG to generate a report for completed tasks and upload it to Google Drive',
-    schedule_interval="0 0 * * *",  # ריצה כל יום ב-12:00 בלילה
-    catchup=False,  # ביטול השלמת משימות רטרואקטיביות
+    schedule_interval="0 0 * * *",  # Run every day at 00:00 AM
+    catchup=False,  # Undo retroactive task completion
 )
 
-# משימה ליצירת הדוח והעלאתו לדרייב
+# Task to create the report and upload it to Drive
 generate_and_upload_report_task = PythonOperator(
     task_id='generate_and_upload_report',
     python_callable=get_completed_task_details,

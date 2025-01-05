@@ -1,20 +1,20 @@
 function closeModal(modalId) { 
     document.getElementById(modalId).style.display = 'none';
     if (modalId === 'processModal') {
-        $('#processSelect').val(''); // איפוס הבחירה
-        $('#processSelect').empty().append('<option value="" disabled selected hidden>Select Process</option>'); // איפוס רשימת הבחירות
-        $('#processForm').hide(); // הסתרת הטופס
+        $('#processSelect').val(''); 
+        $('#processSelect').empty().append('<option value="" disabled selected hidden>Select Process</option>'); 
+        $('#processForm').hide(); 
     }else if (modalId === 'taskModal') {
         $('#taskSelect').val(''); 
-        $('#taskSelect').empty().append('<option value="" disabled selected hidden>Select Task</option>'); // איפוס רשימת הבחירות
+        $('#taskSelect').empty().append('<option value="" disabled selected hidden>Select Task</option>'); 
         $('#taskForm').hide(); 
     } else if (modalId === 'userModal') {
         $('#userSelect').val(''); 
-        $('#userSelect').empty().append('<option value="" disabled selected hidden>Select User</option>'); // איפוס רשימת הבחירות
+        $('#userSelect').empty().append('<option value="" disabled selected hidden>Select User</option>'); 
         $('#userForm').hide(); 
     } else if (modalId === 'sensorModal') {
         $('#sensorSelect').val(''); 
-        $('#sensorSelect').empty().append('<option value="" disabled selected hidden>Select Sensor</option>'); // איפוס רשימת הבחירות
+        $('#sensorSelect').empty().append('<option value="" disabled selected hidden>Select Sensor</option>'); 
         $('#sensorForm').hide(); 
     }
 }
@@ -133,7 +133,7 @@ function getTaskDetails(taskId) {
             // Populate the sensors dropdown
             $('#tasksensorSelect').empty();
             task.sensors.forEach(sensorId => {
-                $('#tasksensorSelect').append(`<option value="${sensorId}">${sensorId}</option>`); // Add sensors dynamically
+                $('#tasksensorSelect').append(`<option value="${sensorId}">${sensorId}</option>`); 
             });
             $('#taskForm').show();
         });
@@ -181,12 +181,11 @@ function getProcessDetails(processId) {
             $('#team').val(data.team);
             $('#Start_Time').val(data.Start_Time);
             $('#finish_time').val(data.finish_time);
-            // טוען את ה-ID של הטסקים לתיבה נפתחת
             $('#taskIds').empty();
-            $.get(`/process_tasks/${processId}`, function (data) {  // יש להשתמש ב-ID של התהליך
-                const taskIds = data.tasks;  // מערך של ה-ID של הטסקים
+            $.get(`/process_tasks/${processId}`, function (data) {  
+                const taskIds = data.tasks; 
                 taskIds.forEach(taskId => {
-                    $('#taskIds').append(`<option value="${taskId}">${taskId}</option>`);  // מוסיף את ה-ID לתיבה
+                    $('#taskIds').append(`<option value="${taskId}">${taskId}</option>`);  
                 });
             });
             $('#processForm').show();
