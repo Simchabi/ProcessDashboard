@@ -22,7 +22,6 @@
                 <a href="#data-table-section" class="btn-scroll">Table</a>
                 <a href="#gantt-section" class="btn-scroll">Gantt Chart</a>
             </div>
-            <!-- כפתור חזרה לעמוד הקודם -->
             <div class="back-button-container">
                 <a href="{{ url_for('home') }}" class="back-button">Back to Home</a>
             </div>
@@ -30,7 +29,7 @@
     </div>
 
     <div class="full-screen-section">
-        <!-- כרטיסים להצגת נתונים עיקריים -->
+        <!-- Key data display cards -->
         <div id="cards-section" class="cards">
             <div class="card">
                 <h2>סה"כ תהליכים</h2>
@@ -50,15 +49,16 @@
             </div>
         </div>
 
-        <!-- גרף עוגה -->
+        <!-- Pie chart -->
         <div class="chart-container">
             <h2>חלוקה לפי סטטוסים</h2>
             <canvas id="statusPieChart"></canvas>
         </div>
     </div>
 
-    <!--  תהליכים טבלה -->
+    <!-- Table processes -->
     <div class="full-screen-table">
+        <h2>טבלת התהליכים</h2>
         <div id="data-table-section">
             <table>
                 <thead>
@@ -75,9 +75,14 @@
                     {% for process in processes %}
                     <tr data-process-id="{{ process.id }}">
                         <td class="process-name">{{ process.name }}</td>
-                        <td> <a href="{{ process.report_link }}" target="_blank">
-                                {{ process.report_link }}
-                            </a></td>
+                        <td>
+                            {% if process.report_link %}
+                            <a href="{{ process.report_link }}" target="_blank" class="preview-link"
+                                data-preview="https://drive.google.com/file/d/{{ process.report_link.split('/')[5] }}/preview">
+                                Open Report
+                            </a>
+                            {% endif %}
+                        </td>
                         <td class="status {{ process.status | lower }}">{{ process.status }}</td>
                         <td>{{ process.start_time }}</td>
                         <td>{{ process.finish_time }}</td>
@@ -89,7 +94,7 @@
         </div>
     </div>
 
-    <!--  משימות טבלה -->
+    <!-- Table Tasks -->
     <div id="popup-container" class="popup hidden">
         <div class="popup-content">
             <span class="close-button">&times;</span>
@@ -106,7 +111,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- תוכן המשימות יתווסף כאן דינאמית -->
+                    <!-- The content of the tasks will be added here dynamically -->
                 </tbody>
             </table>
         </div>
@@ -114,7 +119,7 @@
 
     <!-- Gantt for Processes -->
     <div id="gantt-section" class="gantt-container">
-        <h2>Gantt for Processes</h2>
+        <h2>תרשים גאנט לתהליכים</h2>
         <div id="process-chart" class="gantt-chart"></div>
         <div id="task-chart" class="gantt-chart"></div>
     </div>

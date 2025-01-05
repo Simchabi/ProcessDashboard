@@ -26,18 +26,16 @@ new Chart(ctx, {
         }
     }
 });
-// פונקציה להמיר את השעה לדייט עם תאריך (נשתמש בתאריך של היום)
+
 function convertToDate(dateStr) {
     if (!dateStr) return null;
-
     const [day, month, yearAndTime] = dateStr.split('/');
     const [year, time] = yearAndTime.split(' ');
     const isoDate = `${year}-${month}-${day}T${time}:00`;
-
     return new Date(isoDate);
 }
 
-// נתונים עבור התהליכים
+// Data for the processes
 const processes = JSON.parse(document.getElementById('process-data').textContent);
 const processData = processes.map(process => {
     return {
@@ -46,10 +44,10 @@ const processData = processes.map(process => {
         finish_time: convertToDate(process.finish_time)
     };
 });
-// מיון התהליכים לפי זמן התחלה
+// Sort processes by start time
 const sortedProcesses = processData.sort((a, b) => a.start_time - b.start_time);
 
-// יצירת נתונים לתרשים גנט
+// Create data for the Gantt chart
 const graphData = sortedProcesses.map(process => ({
     x: [new Date(process.finish_time) - new Date(process.start_time)],
     y: [process.name],
@@ -60,7 +58,7 @@ const graphData = sortedProcesses.map(process => ({
     hoverinfo: 'text',
 }));
 
-// יצירת תרשים גנט לתהליכים
+// Create a Gantt chart for processes
 Plotly.newPlot('process-chart', graphData, {
     title: '',
     barmode: 'stack',
@@ -77,15 +75,12 @@ Plotly.newPlot('process-chart', graphData, {
     }
 });
 
-// אירוע לחיצה על תהליך
 document.getElementById('process-chart').on('plotly_click', function (data) {
-    const processName = data.points[0].y; 
+    const processName = data.points[0].y;
     const process = processes.find(p => p.name === processName);
 
     if (process) {
-        // שליפת משימות ל-Process ID
         $.get(`/tasks/${process.id}`, function (tasks) {
-            // המרת הזמנים לאובייקטי Date
             const tasksData = tasks.map(task => {
                 return {
                     ...task,
@@ -93,10 +88,8 @@ document.getElementById('process-chart').on('plotly_click', function (data) {
                     end_date: convertToDate(task.end_date)
                 };
             });
-            // מיון משימות לפי זמן התחלה
+            // Sort tasks by start time
             const sortedtasks = tasksData.sort((a, b) => a.start_date - b.start_date);
-
-            // המרת זמני התחלה וסיום לפורמט Date (רק תאריכים)
             const taskData = sortedtasks.map(task => ({
                 x: [new Date(task.end_date) - new Date(task.start_date)],
                 y: [task.name],
@@ -107,9 +100,9 @@ document.getElementById('process-chart').on('plotly_click', function (data) {
                 hoverinfo: 'text'
             }));
 
-            // יצירת תרשים גנט למשימות
+            // Create a Gantt chart for tasks
             Plotly.newPlot('task-chart', taskData, {
-                title: `Tasks for Process: ${process.name}`,
+                title: `משימות לתהליך: ${process.name}`,
                 barmode: 'stack',
                 xaxis: {
                     type: 'date',
@@ -134,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const taskTableBody = document.getElementById("popup-task-table").querySelector("tbody");
     const popupTitle = document.querySelector(".popup-title");
 
-    // פונקציה להמיר את התאריך לפורמט הרצוי
+    // Function to convert the date to the desired format
     function formatDate(dateString) {
         const date = new Date(dateString);
         const day = String(date.getDate()).padStart(2, '0');
@@ -146,36 +139,35 @@ document.addEventListener("DOMContentLoaded", function () {
         return `${day}/${month}/${year} ${hours}:${minutes}`;
     }
 
-    // טיפול בלחיצה על שורה בטבלה
+    // Handling clicking on a row in the table
     document.querySelectorAll("#data-table-section table tbody tr").forEach((row) => {
         row.addEventListener("click", () => {
-            const processId = row.dataset.processId; 
-            const processName = row.querySelector(".process-name").textContent; // נניח שיש עמודה עם שם התהליך
+            const processId = row.dataset.processId;
+            const processName = row.querySelector(".process-name").textContent;
 
-        // עדכון כותרת הפופאפ
-        popupTitle.textContent = `המשימות של: ${processName}`;
-            // בקשת AJAX לשרת לשליפת המשימות הקשורות לתהליך
+            popupTitle.textContent = `המשימות של: ${processName}`;
             fetch(`/process_tasks/${processId}`)
                 .then(response => response.json())
                 .then(data => {
-                    const tasks = data.tasks || []; 
+                    const tasks = data.tasks || [];
                     taskTableBody.innerHTML = "";
 
-                    // בדיקה אם נמצאו משימות
                     if (tasks.length === 0) {
                         taskTableBody.innerHTML = "<tr><td colspan='6'>לא נמצאו משימות</td></tr>";
                     } else {
-                        // שליפת פרטי כל משימה על ידי ה-IDs של המשימות
                         tasks.forEach(taskId => {
-                            // בקשת AJAX נוספת לכל משימה כדי לשלוף את פרטי המשימה
                             fetch(`/taskID/${taskId}`)
                                 .then(response => response.json())
                                 .then(task => {
-                                    // יצירת שורה חדשה בטבלה עם פרטי המשימה
+                                    // Create a new row in the table with the task details
                                     const row = document.createElement("tr");
                                     row.innerHTML = `
                                         <td>${task.name}</td>
-                                        <td><a href="${task.report_link}" target="_blank">${task.report_link}</a></td>
+                                        <td>${task.report_link ? `
+                                        <a href="${task.report_link}" target="_blank" 
+                                        class="preview-link" 
+                                        data-preview="https://drive.google.com/file/d/${task.report_link.split('/')[5]}/preview">
+                                        Open Report</a>` : ''}</td>
                                         <td>${task.status}</td>
                                         <td>${formatDate(task.start_date)}</td>
                                         <td>${formatDate(task.end_date)}</td>
@@ -189,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 });
                         });
                     }
-                    // הצגת החלון הקופץ
+                    // Display the popup window
                     popupContainer.classList.remove("hidden");
                 })
                 .catch(error => {
@@ -199,12 +191,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // סגירת החלון הקופץ בלחיצה על כפתור הסגירה
+    // Close the popup window by clicking the close button
     closeButton.addEventListener("click", () => {
         popupContainer.classList.add("hidden");
     });
 
-    // סגירת החלון הקופץ בלחיצה מחוץ לחלון
+    // Close the popup window by clicking outside the window
     popupContainer.addEventListener("click", (event) => {
         if (event.target === popupContainer) {
             popupContainer.classList.add("hidden");
@@ -212,3 +204,39 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const previewPopup = document.createElement("div");
+    previewPopup.classList.add("preview-popup");
+    document.body.appendChild(previewPopup);
+
+    let previewUrl = "";
+
+    // Show preview window on mouseover
+    document.addEventListener("mouseover", (event) => {
+        const link = event.target.closest(".preview-link");
+        if (link) {
+            previewUrl = link.getAttribute("data-preview");
+            previewPopup.innerHTML = `<iframe src="${previewUrl}" onerror="this.parentNode.innerHTML='Unable to load preview';"></iframe>`;
+            previewPopup.style.display = "block";
+
+            const rect = link.getBoundingClientRect();
+            previewPopup.style.top = `${rect.bottom + 10 + window.scrollY}px`;
+            previewPopup.style.left = `${rect.left + window.scrollX}px`;
+        }
+    });
+
+    // Leave a window open when hovering over it
+    document.addEventListener("mouseout", (event) => {
+        if (!event.relatedTarget || !previewPopup.contains(event.relatedTarget)) {
+            previewPopup.style.display = "none";
+            previewPopup.innerHTML = "";
+        }
+    });
+
+    // Clicking on the preview window
+    previewPopup.addEventListener("click", () => {
+        if (previewUrl) {
+            window.open(previewUrl, "_blank");
+        }
+    });
+});

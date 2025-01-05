@@ -6,7 +6,6 @@ body {
     color: #ffffff;
 }
 
-
 .dashboard-container {
     width: 90%;
     margin: auto;
@@ -29,12 +28,12 @@ body {
     justify-content: space-around;
     padding: 20px 0;
 }
+
 .card-container {
     display: flex;
-    flex-wrap: wrap; /* מאפשר לכרטיסים לעבור לשורות נוספות */
-    flex-direction: row; /* הכרטיסים יהיו מסודרים בשורה אחת */
+    flex-wrap: wrap; 
+    flex-direction: row; 
 }
-
 
 .stat-card {
     background: #8115ad;
@@ -107,31 +106,28 @@ h1 {
     color: #ffffff;
 }
 
-/* עטיפה חיצונית שמכסה את כל המסך */
 .full-screen-section {
     display: flex;
-    flex-direction: column; /* סידור התוכן בעמודה */
-    justify-content: center; /* מיקום התוכן במרכז באופן אנכי */
-    align-items: center; /* מיקום התוכן במרכז באופן אופקי */
-    height: 100vh; /* גובה של כל המסך */
-    background-color: #a4a1a5; /* צבע רקע */
-    padding: 20px; /* רווח פנימי */
-    box-sizing: border-box; /* כדי שהריווח פנימי לא יפגע בגודל */
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background-color: #a4a1a5; 
+    padding: 20px;
+    box-sizing: border-box; 
 }
-
 
 .cards {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
-    margin-top: 40px; /* מוריד את הכרטיסים למטה */
+    margin-top: 40px; 
     gap: 20px;
-    flex-wrap: wrap; /* מאפשר לכרטיסים לעבור לשורות נוספות */
-    justify-content: center; /* מיקום הכרטיסים במרכז */
-    width: 100%; /* תופס את כל רוחב המסך */
+    flex-wrap: wrap; 
+    justify-content: center;
+    width: 100%; 
 }
 
-/* עיצוב כל כרטיס */
 .card {
     background-color: #e3daec;
     border-radius: 8px;
@@ -139,272 +135,214 @@ h1 {
     text-align: center;
     flex: 1;
     color: #65148b;
-   /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);*/
-    /*max-width: 100%; /* מגביל את רוחב הכרטיסים לאורך המסך */
-    /*box-sizing: border-box; */
-    max-width: 180px; /* מגביל את הרוחב המקסימלי */
-    box-sizing: border-box;/* מאפשר לכלול את הריווח בתוך הרוחב */
-    width: 180px; /* מקטין את הרוחב של הכרטיסים */
-   
-    /*width: 220px; /* רוחב קבוע לכל כרטיס */
+    max-width: 180px; 
+    box-sizing: border-box;
+    width: 180px;
     text-align: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease;
 }
+
 .card h2 {
     margin: 10px 0;
     font-size: 24px;
 }
+
 .chart-container {
-    margin-top: 40px; /* ריווח בין הכרטיסים לגרף */
-    /*width: 100%; /* רוחב מלא */
-    width: auto; /* גודל דינמי - מתאים את עצמו לתוכן */
+    margin-top: 40px; 
+    width: auto; 
     display: flex;
     flex-direction: column;
     align-items: center;
-
     margin: 20px 0;
-    background-color: transparent; /* ביטול רקע */
-    /*background-color: #e3a7fc;*/
-    /*background-color: #3a3d46;*/
-   /* padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);*/
-
-    padding: 0; /* ביטול ריווח פנימי */
-    box-shadow: none; /* ביטול הצללה */
-    border-radius: 0; /* ביטול עיגול הפינות */
-
-    
+    background-color: transparent; 
+    padding: 0; 
+    box-shadow: none; 
+    border-radius: 0; 
 }
+
 .chart-container canvas {
     display: block;
     margin: 0 auto;
 }
-.chart-container h2 {
-    text-align: center; /* ממרכז את הכותרת */
-    color: #65148b; /* צבע הטקסט (לא חובה) */
-    margin-bottom: 20px; /* רווח מתחת לכותרת (לא חובה) */
 
+.chart-container h2 {
+    text-align: center; 
+    color: #65148b;
+    margin-bottom: 20px; 
     font-size: 1.8rem;
-    
 }
 
-
-/* עטיפה חיצונית שמכסה את כל המסך */
 .full-screen-table {
     display: flex;
-    justify-content: center; /* מיקום מרכזי אופקי */
-    align-items: center; /* מיקום מרכזי אנכי */
-    height: 100vh; /* גובה המסך */
-    background-color: #ba7afa; /* רקע סגול בהיר */
-    padding: 20px; /* ריווח פנימי */
-    box-sizing: border-box; /* להכליל שוליים פנימיים בחישוב */
-    overflow: auto; /* גלילה במקרה של תוכן גדול */
+    justify-content: center; 
+    flex-direction: column; 
+    align-items: center; 
+    height: 100vh; 
+    background-color: #ba7afa; 
+    padding: 20px; 
+    box-sizing: border-box; 
+    overflow: auto; 
+}
+
+.full-screen-table h2 {
+    text-align: center; 
+    color: #f0e8f4;
+    margin-bottom: 20px; 
+    font-size: 1.8rem;
 }
 
 table {
-    
     margin: 20px 0;
     background-color: #ffffff;
-    /*background-color: #3a3d46;*/
     border-radius: 8px;
     overflow: hidden;
-
-    width: 100%; /* הטבלה תתפוס את כל הרוחב */
-    border-collapse: collapse; /* ביטול ריווח בין התאים */
-    /*background-color: white; /* רקע הטבלה */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* הצללה לטבלה */
-    text-align: center; /* טקסט במרכז */
+    width: 100%;
+    border-collapse: collapse; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+    text-align: center; 
 }
+
 th, td {
     text-align: center;
-   /* padding: 12px 15px;*/
-    padding: 15px; /* ריווח פנימי */
-    border: 1px solid #ddd; /* מסגרת עדינה */
-    font-size: 1rem; /* גודל טקסט */
+    padding: 15px; 
+    border: 1px solid #ddd;
+    font-size: 1rem; 
     color: #52006b;
 }
+
 th {
-    background-color: #8115ad;/* רקע כותרת */
+    background-color: #8115ad;
     color: #fff;
-    font-weight: bold; /* טקסט מודגש */
+    font-weight: bold; 
 }
+
 tr:nth-child(even) {
-    background-color: #a4a1a5;/* צבע שורות זוגיות */
-    /*background-color: #f9f9f9; /* צבע שורות זוגיות */
-    
-
+    background-color: #a4a1a5;
 }
+
 tr:hover {
-    background-color: #6b6f79;/* הדגשה במעבר עכבר */
-   /* background-color: #f1f1f1; /* הדגשה במעבר עכבר */
+    background-color: #6b6f79;
 }
 
-
-/* עטיפה חיצונית לחלק ה-Gantt */
 .gantt-container {
     display: flex;
-    flex-direction: column; /* מסדר את התוכן בעמודה */
-    justify-content: center; /* מרכז את התוכן אנכית */
-    align-items: center; /* מרכז את התוכן אופקית */
-    /*height: 100vh; /* גובה של כל המסך */
-    width: 100%; /* רוחב מלא */
-   /*width: 90%; /* מרחיב את הגרף ל-90% מרוחב הקונטיינר */
-    /*max-width: 1200px; /* מגביל את הרוחב המקסימלי */
-    background-color: #d9cadd; /* צבע רקע (אפשר לשנות) */
-    padding: 20px; /* ריווח פנימי */
-    box-sizing: border-box; /* כולל את הריווח כחלק מהגודל */
-    gap: 20px; /* רווח בין הגרפים */
-
-   /* height: 400px; /* גובה הגרף */
-   /* /*border: 1px solid #b5a1c5; /* מסגרת דקה */
-    border-radius: 8px; /* פינות מעוגלות */
-   /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* הצללה עדינה */
-
-   /* margin: 20px 0;
-    border-radius: 8px;
-   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);*/
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    width: 100%;
+    background-color: #d9cadd; 
+    padding: 20px; 
+    box-sizing: border-box; 
+    gap: 20px;
+    border-radius: 8px; 
 }
-
 
 .gantt-container h2 {
-    margin-bottom: 20px; /* רווח מתחת לכותרת */
-   
-    font-size: 1.8rem; /* גודל הטקסט */
-    text-align: center; /* ממרכז את הכותרת */
-
-    color: #4d004d; /* צבע טקסט כהה */
-   /* background-color: #f3e6f7; 
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px; */
+    margin-bottom: 20px; 
+    font-size: 1.8rem; 
+    text-align: center; 
+    color: #4d004d; 
 }
 
-
-
-
-
-
-/* עטיפה חיצונית שמכסה את כל המסך */
 .full-screen-navigation {
-    display: flex; /* שימוש ב-Flexbox */
-    justify-content: center; /* מיקום אופקי במרכז */
-    align-items: center; /* מיקום אנכי במרכז */
-    height: 100vh; /* גובה של כל המסך */
-    background-color: #8115ad; /* צבע רקע סגול בהיר */
-    margin: 0; /* ביטול שוליים חיצוניים */
-    padding: 0; /* ביטול שוליים פנימיים */
-    box-sizing: border-box; /* עיצוב נכון של כל המסגרת */
-    text-align: center; /* מיקום מרכזי לטקסט */
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+    background-color: #8115ad; 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+    text-align: center; 
 }
 
-/* עטיפה פנימית של כל התוכן */
 .full-screen-navigation .content {
     display: flex;
-    flex-direction: column; /* סידור התוכן בעמודה */
-    gap: 20px; /* ריווח בין האלמנטים */
-    align-items: center; /* מיקום מרכזי */
-    /*margin-top: -30px; /* הזזה כלפי מעלה של התוכן */
+    flex-direction: column; 
+    gap: 20px; 
+    align-items: center; 
 }
 
-/* עיצוב כותרות */
 .full-screen-navigation .content h1 {
-    font-size: 3rem; /* גודל גדול לכותרות */
-    color: #ffffff; /* צבע סגול כהה */
-    margin: 0; /* ביטול שוליים */
-    margin-top: -20px; /* הזזה של הכותרות כלפי מעלה */
-
+    font-size: 3rem; 
+    color: #ffffff; 
+    margin: 0; 
+    margin-top: -20px; 
 }
 
-/* עיצוב כפתורים */
 .navigation-buttons {
-    display: flex; /* שימוש ב-Flexbox לכפתורים */
-    gap: 20px; /* ריווח בין הכפתורים */
+    display: flex; 
+    gap: 20px; 
 }
 
 .navigation-buttons .btn-scroll {
-    text-decoration: none; /* ביטול קו תחתון */
-    background-color: #d1c4e9; /* צבע רקע סגול */
-    color: #650f8c; /* צבע טקסט */
-    border: 2px solid #650f8c; /* צבע מסגרת */
-    border-radius: 30px; /* פינות מעוגלות */
-    padding: 15px 30px; /* רווח פנימי */
-    font-size: 20px; /* גודל הטקסט */
-    font-weight: bold; /* טקסט מודגש */
-    cursor: pointer; /* שינוי סמן העכבר */
-    transition: all 0.3s ease; /* מעבר חלק */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* הצללה עדינה */
+    text-decoration: none; 
+    background-color: #d1c4e9; 
+    color: #650f8c; 
+    border: 2px solid #650f8c; 
+    border-radius: 30px; 
+    padding: 15px 30px; 
+    font-size: 20px; 
+    font-weight: bold; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
 }
 
-/* עיצוב הכפתורים במעבר עכבר */
 .navigation-buttons .btn-scroll:hover {
-    background-color: #650f8c; /* שינוי צבע רקע */
-    border-color: #d1c4e9; /* שינוי צבע מסגרת */
-    color: #cfcecf; /* צבע טקסט */
-    transform: scale(1.1); /* הגדלה */
+    background-color: #650f8c; 
+    border-color: #d1c4e9; 
+    color: #cfcecf; 
+    transform: scale(1.1); 
 }
 
-/* עיצוב בלחיצה */
 .navigation-buttons .btn-scroll:active {
-    transform: scale(0.95); /* הקטנה בלחיצה */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* הצללה מופחתת */
+    transform: scale(0.95); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
-
-
-
-
-
-
-/* עיצוב כפתור חזרה לעמוד הקודם */
 .back-button-container {
-    margin-top: 200px; /* ריווח נוסף למטה */
-    /*margin-top: 30px; /* ריווח בין הכפתורים */
-    text-align: center; /* מיקום הכפתור במרכז */
+    margin-top: 200px;
+    text-align: center; 
 }
 
 .back-button {
-    text-decoration: none; /* ביטול קו תחתון */
-    background-color: #d1c4e9; /* צבע רקע סגול */
-    color: #650f8c; /* צבע טקסט */
-    border: 2px solid #650f8c; /* צבע מסגרת */
-    border-radius: 30px; /* פינות מעוגלות */
-    padding: 15px 30px; /* רווח פנימי */
-    font-size: 20px; /* גודל הטקסט */
-    font-weight: bold; /* טקסט מודגש */
-    cursor: pointer; /* שינוי סמן העכבר */
-    transition: all 0.3s ease; /* מעבר חלק */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* הצללה עדינה */
+    text-decoration: none; 
+    background-color: #d1c4e9; 
+    color: #650f8c; 
+    border: 2px solid #650f8c; 
+    border-radius: 30px; 
+    padding: 15px 30px; 
+    font-size: 20px;
+    font-weight: bold; 
+    cursor: pointer;
+    transition: all 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
 }
 
-/* עיצוב הכפתור במעבר עכבר */
 .back-button:hover {
-    background-color: #650f8c; /* שינוי צבע רקע */
-    border-color: #d1c4e9; /* שינוי צבע מסגרת */
-    color: #cfcecf; /* צבע טקסט */
-    transform: scale(1.1); /* הגדלה */
+    background-color: #650f8c;
+    border-color: #d1c4e9; 
+    color: #cfcecf;
+    transform: scale(1.1); 
 }
 
-/* עיצוב בלחיצה */
 .back-button:active {
-    transform: scale(0.95); /* הקטנה בלחיצה */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* הצללה מופחתת */
+    transform: scale(0.95); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
-
-
 
 .custom-gif {
-    position: fixed; /* מאפשר מיקום יחסי למסך */
-    bottom: 50px; /* מרחק של 50px מהתחתית */
-    right: 150px; /* מרחק של 50px מהימין */
-    width: 150px; /* גודל מוגדל של הגיף */
-    height: auto; /* שומר על יחס הרוחב-גובה */
-    z-index: 10; /* מבטיח שהגיף יהיה מעל אלמנטים אחרים */
-    display: none; /* מסתיר את הגיף כברירת מחדל */
+    position: fixed; 
+    bottom: 50px; 
+    right: 150px; 
+    width: 150px; 
+    height: auto; 
+    z-index: 10; 
+    display: none; 
 }
 
-/*שתמיד הקישור יהיה כחול*/
 a:link, a:visited {
     color: blue;
     text-decoration: underline;
@@ -418,46 +356,40 @@ a:active {
     color: blue;
 }
 
-/*#7176f4
-/*f4e4ff סגול בהיר
-
-
-/* עיצוב לחלון הקופץ */
 .popup {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* רקע חצי שקוף */
+    background-color: rgba(0, 0, 0, 0.6); 
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
 }
+
 .popup-title {
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 20px; /* מרווח מתחת לכותרת */
+    margin-bottom: 20px; 
     text-align: center;
     color: #8115ad;
 }
 
-/* תוכן החלון */
 .popup-content {
     background: white;
     border-radius: 10px;
     padding: 20px;
     width: 80%;
     max-width: 1200px;
-    max-height: 90vh; /* גובה מקסימלי */
-    overflow-y: auto; /* גלילה אנכית לתוכן ארוך */
+    max-height: 90vh; 
+    overflow-y: auto; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
     animation: fadeIn 0.3s ease;
 }
 
-/* אנימציה לפתיחת החלון */
 @keyframes fadeIn {
     from {
         transform: scale(0.8);
@@ -469,7 +401,6 @@ a:active {
     }
 }
 
-/* כפתור סגירה */
 .close-button {
     position: absolute;
     top: 10px;
@@ -482,10 +413,9 @@ a:active {
 }
 
 .close-button:hover {
-    color: #100302; /* אדום בהיר בעת ריחוף */
+    color: #100302; 
 }
 
-/* עיצוב הטבלה */
 .styled-table {
     border-collapse: collapse;
     width: 100%;
@@ -496,33 +426,32 @@ a:active {
 
 .styled-table th, .styled-table td {
     border: 1px solid #ddd;
-    padding: 12px; /* הגדלת הרווחים בתא */
-    text-align: center; /* יישור מרכזי */
-    vertical-align: middle; /* יישור אנכי */
-    word-wrap: break-word; /* שבירת שורות ארוכות */
+    padding: 12px; 
+    text-align: center; 
+    vertical-align: middle; 
+    word-wrap: break-word; 
 }
 
 .styled-table th {
-    background-color: #8115ad; /* סגול כהה */
-    color: #fff; /* צבע טקסט לבן */
+    background-color: #8115ad; 
+    color: #fff; 
     font-weight: bold;
     text-align: center;
-    padding: 12px; /* שמירה על רווחים */
+    padding: 12px; 
 
 }
 
 .styled-table tr:nth-child(even) {
-    background-color: #a4a1a5; /* צבע רקע לסירוגין */
+    background-color: #a4a1a5; 
 }
 
 .styled-table tr:hover {
-    background-color: #6b6f79; /* צבע רקע בעת ריחוף */
+    background-color: #6b6f79; 
     transition: background-color 0.2s ease;
 }
 
-/* כפתור בתוך הטבלה */
 .table-button {
-    background-color: #007bff; /* צבע כחול */
+    background-color: #007bff; 
     color: white;
     padding: 5px 10px;
     border: none;
@@ -533,11 +462,37 @@ a:active {
 }
 
 .table-button:hover {
-    background-color: #0056b3; /* כחול כהה יותר */
+    background-color: #0056b3; 
 }
 
-/* עיצוב אלמנט מוסתר */
 .hidden {
     display: none;
 }
 
+.preview-popup {
+    display: none;
+    position: absolute;
+    width: 350px; 
+    height: 350px; 
+    background-color: #fff; 
+    z-index: 1000;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px; 
+    box-shadow: none; 
+    border: none; 
+}
+
+.preview-popup iframe {
+    width: 100%;
+    height: 100%;
+    border: none; 
+    border-radius: 0; 
+    overflow: hidden; 
+    background-color: #fff; 
+}
+
+.preview-popup.visible {
+    display: block;
+    opacity: 1; 
+}
