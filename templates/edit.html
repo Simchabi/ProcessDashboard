@@ -142,6 +142,22 @@
                                 <input type="text" id="taskName" class="form-control">
                             </div>
                             <div class="mb-3">
+                                <label for="addSensorSelect" class="form-label">Add Sensor</label>
+                                <select id="addSensorSelect" class="form-select"
+                                    onchange="AddgetSensorDetailsTask(this.value)">
+                                    <option value="" disabled selected hidden>Select sensor to add</option>
+                                    <!-- Populate sensors from MongoDB that are not currently assigned to the task -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tasksensorSelect" class="form-label">Delete Sensor</label>
+                                <select id="tasksensorSelect" class="form-select"
+                                    onchange="getSensorDetailsTask(this.value)">
+                                    <option value="" disabled selected hidden>Select sensor to delete</option>
+                                    <!-- Populate sensors dynamically -->
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label for="taskdescription" class="form-label">Description</label>
                                 <input type="text" id="taskdescription" class="form-control">
                             </div>
@@ -177,22 +193,6 @@
                             <div class="mb-3">
                                 <label for="remarks" class="form-label">Remarks</label>
                                 <textarea id="remarks" class="form-control"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="addSensorSelect" class="form-label">Add Sensor</label>
-                                <select id="addSensorSelect" class="form-select"
-                                    onchange="AddgetSensorDetailsTask(this.value)">
-                                    <option value="" disabled selected hidden>Select sensor to add</option>
-                                    <!-- Populate sensors from MongoDB that are not currently assigned to the task -->
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="tasksensorSelect" class="form-label">Delete Sensor</label>
-                                <select id="tasksensorSelect" class="form-select"
-                                    onchange="getSensorDetailsTask(this.value)">
-                                    <option value="" disabled selected hidden>Select sensor to delete</option>
-                                    <!-- Populate sensors dynamically -->
-                                </select>
                             </div>
                             <button type="button" class="btn btn-primary" onclick="saveTaskChanges()">Save
                                 Changes</button>
@@ -291,6 +291,20 @@
                                 <input type="text" id="processName" class="form-control">
                             </div>
                             <div class="mb-3">
+                                <label for="addTaskSelect" class="form-label">Add Task</label>
+                                <select id="addTaskSelect" class="form-select"
+                                    onchange="AddgetTaskDetailsProcess(this.value)">
+                                    <option value="" disabled selected hidden>Select task to add</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="processtaskSelect" class="form-label">Delete Task</label>
+                                <select id="processtaskSelect" class="form-select"
+                                    onchange="getTaskDetailsProcess(this.value)">
+                                    <option value="" disabled selected hidden>Select task to delete</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
                                 <label for="client" class="form-label">Client</label>
                                 <input type="text" id="client" class="form-control">
                             </div>
@@ -320,20 +334,6 @@
                             <div class="mb-3">
                                 <label for="finish_time" class="form-label">Finish Time</label>
                                 <input type="datetime-local" id="finish_time" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label for="addTaskSelect" class="form-label">Add Task</label>
-                                <select id="addTaskSelect" class="form-select"
-                                    onchange="AddgetTaskDetailsProcess(this.value)">
-                                    <option value="" disabled selected hidden>Select task to add</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="processtaskSelect" class="form-label">Delete Task</label>
-                                <select id="processtaskSelect" class="form-select"
-                                    onchange="getTaskDetailsProcess(this.value)">
-                                    <option value="" disabled selected hidden>Select task to delete</option>
-                                </select>
                             </div>
                             <button type="button" class="btn btn-primary" onclick="saveProcessChanges()">Save
                                 Changes</button>
